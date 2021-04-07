@@ -1,4 +1,10 @@
-asgiref==3.3.1
-Django==3.1.7
+asgiref==3.2.10
+Django==2.2.5
+django-rest-framework-mongoengine==3.4.0
+djangorestframework==3.10.3
+djongo==1.2.36
+dnspython==1.16.0
+mongoengine==0.18.2
+pymongo==3.9.0
 pytz==2021.1
-sqlparse==0.4.1
+sqlparse==0.2.4

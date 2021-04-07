@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -73,13 +74,17 @@ WSGI_APPLICATION = 'ai_contest_website.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+### MongoDB configuration
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'default': {      
+        'ENGINE': 'djongo',
+        'NAME': 'ai_contest',
+        'HOST': 'mongodb+srv://can:jVjPFsIsHToA4dp4@ai-contest.igk5z.mongodb.net/test?retryWrites=true&w=majority',
+        'USER': 'can',
+        'PASSWORD': 'jVjPFsIsHToA4dp4',
+        'ENFORCE_SCHEMA': False
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
