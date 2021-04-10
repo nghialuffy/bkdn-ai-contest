@@ -1,19 +1,22 @@
 from djongo import models
-from api.models import Contest
 
 class User(models.Model):
     _id = models.ObjectIdField()
-    username = models.CharField(max_length=50)
+    username = models.CharField(max_length=50, unique=True)
     password = models.TextField()
     role = models.CharField(max_length=15)
     created = models.DateTimeField(auto_now_add=True)
-    ## Contest contain many User
-    contests = models.ForeignKey(
-        'Contest',
-        on_delete=models.DO_NOTHING,
-    )    
+    # ## Contest contain many User
+    # contests = models.ManyToManyField(
+    #     Contest,
+    #     blank=True, null=True,
+    #     related_name="attend_contests"
+    # )    
+
     class Meta:
         db_table = 'user'
+    def __str__(self):
+        return self.username
 
     def save(self, *args, **kwargs):
         # if not hasattr(self, 'id') or self._id == '':
@@ -23,5 +26,5 @@ class User(models.Model):
 
 
 # e = User(username='bkdn', password='123',role='admin')
-# e.save()
-print(list(User.objects.all()))
+# # e.save()
+# print(list(User.objects.all()))

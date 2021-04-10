@@ -17,7 +17,9 @@ from rest_framework.renderers import JSONRenderer
 #     campaigns = json_util.loads(str)
 #     return Response(campaigns)
 def index(request):
-    list_user = list(User.objects.all())
-    serializer = serializers.serialize('json', list_user)
-    print(serializer)
-    return JsonResponse({"result":serializer})
+    list_user = User.objects.all()
+    serializer_class = UserSerializer
+
+    if request.method == 'GET':
+        serializer = UserSerializer(data=list_user)
+        return JsonResponse(serializer.data, safe=False)
