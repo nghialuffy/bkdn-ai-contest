@@ -9,10 +9,6 @@ class Language(models.Model):
     class Meta:
         db_table = 'language'
 
-    def save(self, *args, **kwargs):
-        # if not hasattr(self, 'id') or self._id == '':
-        #     self.id = User.get_new_id()
-        super(Language, self).save(**kwargs)
 
 
 

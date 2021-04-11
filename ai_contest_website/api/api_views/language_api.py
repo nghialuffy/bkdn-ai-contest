@@ -1,18 +1,29 @@
-from bson import json_util
-from rest_framework import permissions, viewsets, status, views
-from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.core import serializers
 from api.models import Language
-from api.serializers.UserSerializer import UserSerializer
-from rest_framework.renderers import JSONRenderer
+from api.serializers.LanguageSerializer import LanguageSerializer
+@api_view(['GET'])
+def list_all(request):
+    if request.method == 'GET':        
+        list_language = Language.objects.all()
+        serializer = LanguageSerializer(list_language, many=True)
+        data = {'data': serializer.data}
+        return JsonResponse(data, safe=False)
 
-def index(request):
-    list_language = Language.objects.all()
-    # serializer_class = UserSerializer
+@api_view(['POST'])
+def add_language(request):
+    if request.method == 'POST':
+        language = Language.objects.get(name='python') 
+        language_serializer = LanguageSerializer(data=language)
+        data = {}
 
-    # if request.method == 'GET':
-    #     serializer = UserSerializer(data=list_user)
-    #     return JsonResponse(serializer.data, safe=False)
+        if language_serializer.is_valid():
+            data['response'] = "Add language successfully!"
+            data['name'] = language.name
+            data['path'] = language.path
+        else:
+            data = language_serializer.errors
+        
+        print(JsonResponse(data, safe=False))
+        return JsonResponse(data)

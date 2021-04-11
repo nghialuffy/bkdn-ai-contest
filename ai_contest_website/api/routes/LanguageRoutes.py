@@ -5,5 +5,5 @@ from api.api_views import language_api
 
 urlpatterns = [
     # ex: /polls/
-    path('', language_api.index, name='index'),
+    path('', language_api.list_all, name='index'),
 ]
