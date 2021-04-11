@@ -10,8 +10,4 @@ class Language(models.Model):
         db_table = 'language'
 
 
-
-
-# l = Language(name='c++')
-# l.save()
-# print(list(Language.objects.all()))
+   
