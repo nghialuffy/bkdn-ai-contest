@@ -18,10 +18,6 @@ class User(models.Model):
     def __str__(self):
         return self.username
 
-    def save(self, *args, **kwargs):
-        # if not hasattr(self, 'id') or self._id == '':
-        #     self.id = User.get_new_id()
-        super(User, self).save(**kwargs)
 
 
 

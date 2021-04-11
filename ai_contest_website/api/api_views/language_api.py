@@ -1,30 +1,32 @@
-from django.http import JsonResponse
-from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework import generics
 from rest_framework.response import Response
+
 from api.models import Language
 from api.serializers.LanguageSerializer import LanguageSerializer
-@api_view(['GET', 'POST'])
-def index(request):
-    print('Language request')
-    if request.method == 'GET':        
-        list_language = Language.objects.all()
-        serializer = LanguageSerializer(list_language, many=True)
-        data = {'data': serializer.data}
-        return JsonResponse(data, safe=False)
-    elif request.method == 'POST':
-        print(request)
-        language_serializer = LanguageSerializer(data=request.data)
-        data = {}
 
-        if language_serializer.is_valid():
-            language_serializer.save()
-            print(Response(language_serializer.data, status=status.HTTP_201_CREATED))
-            return Response(language_serializer.data, status=status.HTTP_201_CREATED)
+class LanguageList(generics.ListCreateAPIView):
+    queryset = Language.objects.all()
+    serializer_class = LanguageSerializer
+    print(queryset)
+    def list(self, request):
+        # Note the use of `get_queryset()` instead of `self.queryset`
+        queryset = self.get_queryset()
+        serializer = LanguageSerializer(queryset, many=True)
+        return Response(serializer.data)
 
-        return Response(language_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
-def detail_item(request):
-    if request.method == 'GET':        
-        list_language = Language.objects.all()
+class LanguageInfo(generics.GenericAPIView):
+    queryset = Language.objects
+    serializer_class = LanguageSerializer
+
+    def get(self, request, *args, **kwargs):
+        obj = self.get_object()
+        serializer = self.get_serializer(obj)
+        return Response(serializer.data)
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        obj.delete()
+        return Response("Language is deleted successful")
+    
+

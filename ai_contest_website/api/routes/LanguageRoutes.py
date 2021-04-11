@@ -1,10 +1,10 @@
 from django.urls import path
 
-from api import views
-from api.api_views import language_api
+from api.api_views.language_api import *
 
 urlpatterns = [
     # ex: /polls/
-    path('', language_api.index, name='index'),
-    path('<int:pk>/', language_api.detail_item, name='detail'),
+    path('', LanguageList.as_view(), name='index'),
+    path('<str:pk>/', LanguageInfo.as_view(), name='language_info'),
+    # path('<int:pk>/', language_api.detail_item, name='detail'),
 ]
