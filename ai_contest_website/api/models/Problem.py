@@ -1,7 +1,6 @@
 
 from djongo import models
-from api.models.Language import Language
-from api.models.Contest import Contest
+from api.models import Language, Contest
 
 class Problem(models.Model):
     _id = models.ObjectIdField()

@@ -1,6 +1,6 @@
 
 from djongo import models
-from api.models.User import User
+from api.models import User
 
 class Contest(models.Model):
     _id = models.ObjectIdField()

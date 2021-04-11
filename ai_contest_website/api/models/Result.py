@@ -1,9 +1,7 @@
 
 from djongo import models
-from api.models.User import User
-from api.models.Contest import Contest
-from api.models.Language import Language
-from api.models.Problem import Problem
+from api.models import User
+from api.models import Contest, Language, Problem
 
 class Result(models.Model):
     _id = models.ObjectIdField()

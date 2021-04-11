@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.core import serializers
-from api.models.Problem import Problem
+from api.models import Problem
 from api.serializers.UserSerializer import UserSerializer
 from rest_framework.renderers import JSONRenderer
 
