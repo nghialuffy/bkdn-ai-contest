@@ -8,6 +8,8 @@ from django.core import serializers
 from api.models import Contest
 from api.serializers.UserSerializer import UserSerializer
 from rest_framework.renderers import JSONRenderer
+from api.serializers.ContestSerializer import ContestSerializer
 
 def index(request):
     list_contest = Contest.objects.all()
+    

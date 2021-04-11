@@ -29,12 +29,13 @@ class LanguageSerializer(serializers.ModelSerializer):
         #     raise serializers.ValidationError("finish must occur after start")
         # return data
     # def validated_data(self, value)
-
+# print("================")
 # list_language = Language.objects.all()
 # serializer_class = LanguageSerializer(list_language, many=True)
 # print(JSONRenderer().render(serializer_class.data))
 # l = Language(name='c++')
 # # l.save()
 # print(list(Language.objects.all()))
+# print("================")
 
 

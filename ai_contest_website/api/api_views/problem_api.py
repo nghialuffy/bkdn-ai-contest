@@ -8,6 +8,6 @@ from django.core import serializers
 from api.models import Problem
 from api.serializers.UserSerializer import UserSerializer
 from rest_framework.renderers import JSONRenderer
-
+from api.serializers.ProblemSerializer import ProblemSerializer 
 def index(request):
     list_problem = Problem.objects.all()

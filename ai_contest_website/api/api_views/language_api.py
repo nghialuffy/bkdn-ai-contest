@@ -7,7 +7,7 @@ from api.serializers.LanguageSerializer import LanguageSerializer
 class LanguageList(generics.ListCreateAPIView):
     queryset = Language.objects.all()
     serializer_class = LanguageSerializer
-    print(queryset)
+    # print(queryset)
     def list(self, request):
         # Note the use of `get_queryset()` instead of `self.queryset`
         queryset = self.get_queryset()
