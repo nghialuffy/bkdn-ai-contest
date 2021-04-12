@@ -1,25 +1,40 @@
-from bson import json_util
-from rest_framework import permissions, viewsets, status, views
-from django.shortcuts import render
-from django.http import JsonResponse
-from rest_framework.decorators import api_view
+from rest_framework import generics, permissions
 from rest_framework.response import Response
-from django.core import serializers
 from api.models import User
-from api.serializers.UserSerializer import UserSerializer
-from rest_framework.renderers import JSONRenderer
+from api.serializers.UserSerializer import UserSerializer,RegisterUserSeriallizer
 
-# @api_view(['GET'])
-# def get_user(request):
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permissions = [permissions.AllowAny]
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data)
 
-#     # TODO Only for testing purposes!
-#     str = json_util.dumps(query)
-#     campaigns = json_util.loads(str)
-#     return Response(campaigns)
-def index(request):
-    list_user = User.objects.all()
+class UserInfo(generics.GenericAPIView):
+    queryset = User.objects
     serializer_class = UserSerializer
 
-    if request.method == 'GET':
-        serializer = UserSerializer(data=list_user)
-        return JsonResponse(serializer.data, safe=False)
+    def get(self, request, *args, **kwargs):
+        obj = self.get_object()
+        serializer = self.get_serializer(obj)
+        return Response(serializer.data)
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        obj.delete()
+        return Response("Language is deleted successful")
+class RegisterUser(generics.GenericAPIView):
+    queryset = User.objects
+    serializer_class = RegisterUserSeriallizer
+
+    def get(self, request, *args, **kwargs):
+        obj = self.get_object()
+        serializer = self.get_serializer(obj)
+        return Response(serializer.data)
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        obj.delete()
+        return Response("Language is deleted successful")

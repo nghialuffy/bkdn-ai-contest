@@ -1,23 +1,18 @@
 from djongo import models
-
 class User(models.Model):
     _id = models.ObjectIdField()
     username = models.CharField(max_length=50, unique=True)
+    first_name = models.TextField(max_length=50, default="")
+    last_name = models.TextField(max_length=50, default="")
+
     password = models.TextField()
     role = models.CharField(max_length=15)
     created = models.DateTimeField(auto_now_add=True)
-    # ## Contest contain many User
-    # contests = models.ManyToManyField(
-    #     Contest,
-    #     blank=True, null=True,
-    #     related_name="attend_contests"
-    # )    
-
+    isAdmin = models.BooleanField(default=False)
+    isOrganizer = models.BooleanField(default=False)
+    url = models.URLField()
     class Meta:
         db_table = 'user'
-    def __str__(self):
-        return self.username
-
 
 
 
