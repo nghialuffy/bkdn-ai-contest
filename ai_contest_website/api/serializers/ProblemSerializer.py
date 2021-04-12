@@ -22,12 +22,17 @@ class ProblemSerializer(serializers.ModelSerializer):
         instance.train_data = validated_data.get('train_data', instance.train_data)
         instance.test_data = validated_data.get('test_data', instance.test_data)
         instance.time_executed_limit = validated_data.get('time_executed_limit', instance.time_executed_limit)
-
+        instance.save()
+        return instance
+        
     def validate(self, data):
         validated_data = data
         return validated_data
 
 # problem = Problem(title="Nghialuffy")
-list_problem = Problem.objects.all()
-serializer_class = ProblemSerializer(list_problem, many=True)
-print(JSONRenderer().render(serializer_class.data))
+# Problem(title="problem 1").save()
+# Problem(title="problem 2").save()
+# list_problem = Problem.objects.all()
+# print(list_problem)
+# serializer_class = ProblemSerializer(list_problem, many=True)
+# print(JSONRenderer().render(serializer_class.data))

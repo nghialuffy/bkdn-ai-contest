@@ -8,6 +8,7 @@ from django.core import serializers
 from api.models import Result
 from api.serializers.UserSerializer import UserSerializer
 from rest_framework.renderers import JSONRenderer
+from api.serializers.ResultSerializer import ResultSerializer
 
 def index(request):
     print("sdfasdf")
