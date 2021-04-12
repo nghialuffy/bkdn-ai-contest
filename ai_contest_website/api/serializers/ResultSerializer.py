@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_meets_djongo.serializers import DjongoModelSerializer
 from api.models import Result, Problem, User, Language
 from api.serializers.UserSerializer import UserSerializer
 from api.serializers.LanguageSerializer import LanguageSerializer
@@ -6,14 +6,14 @@ from api.serializers.ProblemSerializer import ProblemSerializer
 from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
 
-class ResultSerializer(serializers.ModelSerializer):
+class ResultSerializer(DjongoModelSerializer):
     problem = ProblemSerializer()
     created_user = UserSerializer()
     language = LanguageSerializer()
 
     class Meta:
         model = Result
-        fields = ('problem', 'created_user', 'model_file', 'code_test', 'code_train', 'accuracy', 'time_submit', 'language')
+        fields = ('_id', 'problem', 'created_user', 'model_file', 'code_test', 'code_train', 'accuracy', 'time_submit', 'language')
 
     def create(self, validated_data):
         return Result.objects.create(**validated_data)
@@ -43,6 +43,6 @@ class ResultSerializer(serializers.ModelSerializer):
 # r.problem = p
 # r.created_user = u
 # r.language = l1
-# r.save()
+# # r.save()
 # serializers_r = ResultSerializer(r)
 # print(JSONRenderer().render(serializers_r.data))

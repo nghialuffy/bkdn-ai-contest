@@ -1,18 +1,18 @@
-from rest_framework import serializers
+from rest_meets_djongo.serializers import DjongoModelSerializer
 from api.models import Language
 from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
-
-class LanguageSerializer(serializers.ModelSerializer):
+class LanguageSerializer(DjongoModelSerializer):
     class Meta:
         model = Language
-        fields = ('name', 'created', 'path')
+        fields = ('_id', 'name', 'created', 'path')
     
     def create(self, validated_data):
         language = Language.objects.create(**validated_data)
         return language
 
     def update(self, instance, validated_data):
+        instance._id = validated_data.get('_id', instance._id)
         instance.name = validated_data.get('name', instance.name)
         instance.path = validated_data.get('path', instance.path)
         instance.created = validated_data.get('created', instance.created)

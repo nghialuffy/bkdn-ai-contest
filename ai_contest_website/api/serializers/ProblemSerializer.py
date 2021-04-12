@@ -1,15 +1,15 @@
-from rest_framework import serializers
+from rest_meets_djongo.serializers import DjongoModelSerializer
 from api.models import Problem, Contest, Language
 from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
 from api.serializers.ContestSerializer import ContestSerializer
 from api.serializers.LanguageSerializer import LanguageSerializer
-class ProblemSerializer(serializers.ModelSerializer):
+class ProblemSerializer(DjongoModelSerializer):
     contest = ContestSerializer()
     languages = LanguageSerializer(many=True)
     class Meta:
         model = Problem
-        fields = ('title', 'contest', 'languages', 'description', 'score', 'code_test', 'data_sample', 'train_data', 'test_data', 'time_executed_limit')
+        fields = ('_id', 'title', 'contest', 'languages', 'description', 'score', 'code_test', 'data_sample', 'train_data', 'test_data', 'time_executed_limit')
 
     def create(self, validated_data):
         return Problem.objects.create(**validated_data)
