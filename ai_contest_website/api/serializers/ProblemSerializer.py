@@ -1,9 +1,12 @@
 from rest_framework import serializers
-from api.models import Problem
+from api.models import Problem, Contest, Language
 from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
-
+from api.serializers.ContestSerializer import ContestSerializer
+from api.serializers.LanguageSerializer import LanguageSerializer
 class ProblemSerializer(serializers.ModelSerializer):
+    contest = ContestSerializer()
+    languages = LanguageSerializer(many=True)
     class Meta:
         model = Problem
         fields = ('title', 'contest', 'languages', 'description', 'score', 'code_test', 'data_sample', 'train_data', 'test_data', 'time_executed_limit')
@@ -29,10 +32,10 @@ class ProblemSerializer(serializers.ModelSerializer):
         validated_data = data
         return validated_data
 
-# problem = Problem(title="Nghialuffy")
-# Problem(title="problem 1").save()
-# Problem(title="problem 2").save()
-# list_problem = Problem.objects.all()
-# print(list_problem)
-# serializer_class = ProblemSerializer(list_problem, many=True)
-# print(JSONRenderer().render(serializer_class.data))
+# problem = Problem.objects.get(title="problem 1")
+# contest = Contest.objects.get(title="bkdnContest")
+# language = Language.objects.get(name='python')
+# problem.contest = contest
+# problem.languages = [language]
+# serializers_problem = ProblemSerializer(problem)
+# print(JSONRenderer().render(serializers_problem.data))

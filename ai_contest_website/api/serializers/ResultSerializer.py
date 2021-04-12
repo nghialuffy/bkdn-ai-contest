@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from api.models import Result, Problem, User, Language
-from api.serializers.ProblemSerializer import ProblemSerializer
 from api.serializers.UserSerializer import UserSerializer
 from api.serializers.LanguageSerializer import LanguageSerializer
+from api.serializers.ProblemSerializer import ProblemSerializer
 from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
 
@@ -36,13 +36,13 @@ class ResultSerializer(serializers.ModelSerializer):
 
 # print("Create result")
 
-u = User.objects.get(username='bkdn')
-p = Problem.objects.get(title='problem 1')
-l1 = Language.objects.get(name='python')
-r = Result()
-r.problem = p
-r.created_user = u
-r.language = l1
-r.save()
-serializers_r = ResultSerializer(r)
-print(JSONRenderer().render(serializers_r.data))
+# u = User.objects.get(username='bkdn')
+# p = Problem.objects.get(title='problem 1')
+# l1 = Language.objects.get(name='python')
+# r = Result()
+# r.problem = p
+# r.created_user = u
+# r.language = l1
+# r.save()
+# serializers_r = ResultSerializer(r)
+# print(JSONRenderer().render(serializers_r.data))
