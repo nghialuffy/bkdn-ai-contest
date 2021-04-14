@@ -2,4 +2,4 @@ from .ContestSerializer import ContestSerializer
 from .LanguageSerializer import LanguageSerializer
 from .ProblemSerializer import ProblemSerializer
 from .ResultSerializer import ResultSerializer
-from .UserSerializer import UserSerializer, RegisterUserSeriallizer
+from .UserSerializer import UserSerializer, RegisterUserSerializer

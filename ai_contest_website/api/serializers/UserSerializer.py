@@ -23,7 +23,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     def validate(self, data):
         validated_data = data
         return validated_data
-class RegisterUserSeriallizer(serializers.ModelSerializer):
+class RegisterUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'password', 'first_name', 'last_name', 'created']
@@ -50,3 +50,6 @@ class RegisterUserSeriallizer(serializers.ModelSerializer):
         # validated_data['role'] = 'user'
         return validated_data
     
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
