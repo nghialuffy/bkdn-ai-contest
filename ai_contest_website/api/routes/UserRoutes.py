@@ -4,6 +4,6 @@ from api.api_views import UserLoginView, UserRegisterView, UserList, UserInfo
 
 urlpatterns = [
     path('', UserList.as_view(), name='index'),
-    path('<str:pk>/', UserList.as_view(), name='user_detail'),
+    path('<str:pk>/', UserInfo.as_view(), name='user_detail'),
     
 ]
