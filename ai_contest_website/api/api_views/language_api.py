@@ -28,5 +28,18 @@ class LanguageInfo(generics.GenericAPIView):
         obj = self.get_object()
         obj.delete()
         return Response("Language is deleted successful")
+
+    def put(self, request, *args, **kwargs):
+        print(request)
+        obj = self.get_object()
+        serializer = self.get_serializer(obj, data=request.data, partial=True)
+        lookup_field = 'pk'
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Language updated successfully"})
+
+        else:
+            return Response({"message": "failed", "details": serializer.errors})
     
 
