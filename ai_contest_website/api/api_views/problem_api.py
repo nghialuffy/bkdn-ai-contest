@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from django.core import serializers
 from api.models import Problem
 from api.serializers.UserSerializer import UserSerializer
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import JSONRenderer
 from api.serializers.ProblemSerializer import ProblemSerializer 
 def index(request):

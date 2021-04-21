@@ -1,12 +1,18 @@
 from rest_framework import generics
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
+from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 from api.models import Language
+from api.permissions.permissions import IsSSOAdmin
 from api.serializers.LanguageSerializer import LanguageSerializer
 
 class LanguageList(generics.ListCreateAPIView):
+    authentication_classes = [JWTTokenUserAuthentication]
+    permission_classes = [IsSSOAdmin]
     queryset = Language.objects.all()
     serializer_class = LanguageSerializer
+
     # print(queryset)
     def list(self, request):
         # Note the use of `get_queryset()` instead of `self.queryset`
@@ -16,6 +22,8 @@ class LanguageList(generics.ListCreateAPIView):
 
 
 class LanguageInfo(generics.GenericAPIView):
+    authentication_classes = [JWTTokenUserAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Language.objects
     serializer_class = LanguageSerializer
 

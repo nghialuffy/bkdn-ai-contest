@@ -2,23 +2,47 @@ from django.contrib.auth.hashers import make_password, get_hasher
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.hashers import check_password
-
 from rest_framework import generics, permissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework.pagination import PageNumberPagination
 
+from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
+from api.permissions.permissions import IsSSOAdmin
 from api.models import User
 from api.serializers.UserSerializer import UserSerializer, RegisterUserSerializer, UserLoginSerializer
 
-class UserList(generics.ListCreateAPIView):
+class ListModelMixin(object):
+    """
+    List a queryset.
+    """
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        print('sdddddddd')
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+class UserList(ListModelMixin, generics.ListCreateAPIView):
+    authentication_classes = [JWTTokenUserAuthentication]
+    permission_classes = [IsSSOAdmin]
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permissions = [permissions.AllowAny]
-    def list(self, request):
-        queryset = self.get_queryset()
-        serializer = UserSerializer(queryset, many=True)
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
 class UserInfo(generics.GenericAPIView):
@@ -53,6 +77,7 @@ class UserRegisterView(generics.GenericAPIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
 class UserLoginView(APIView):
+    permissions = [permissions.AllowAny]
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
