@@ -23,6 +23,15 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     def validate(self, data):
         validated_data = data
         return validated_data
+
+class UserIdSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['_id']
+    def create(self, validated_data):
+        user = User.objects.create(**validated_data)
+        return user
+
 class RegisterUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

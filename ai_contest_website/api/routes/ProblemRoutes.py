@@ -1,8 +1,10 @@
 from django.urls import path
 
-from api.api_views import problem_api
+from api.api_views.problem_api import ProblemInfo, ProblemList
 
 urlpatterns = [
     # ex: /polls/
-    path('', problem_api.index, name='index'),
+    path('', ProblemList.as_view(), name='problem_list'),
+    path('<str:pk>/', ProblemInfo.as_view(), name='problem_info')
+
 ]
