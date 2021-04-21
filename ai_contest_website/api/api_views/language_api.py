@@ -1,8 +1,9 @@
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.response import Response
 
 from api.models import Language
 from api.serializers.LanguageSerializer import LanguageSerializer
+from bson import ObjectId
 
 class LanguageList(generics.ListCreateAPIView):
     queryset = Language.objects.all()
@@ -20,25 +21,36 @@ class LanguageInfo(generics.GenericAPIView):
     serializer_class = LanguageSerializer
 
     def get(self, request, *args, **kwargs):
-        obj = self.get_object()
+        try:
+            obj = self.get_object()
+        except Exception as exc:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = self.get_serializer(obj)
         return Response(serializer.data)
 
     def delete(self, request, *args, **kwargs):
-        obj = self.get_object()
-        obj.delete()
-        return Response("Language is deleted successful")
+        try:
+            obj = self.get_object()
+        except Exception as exc:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        operator = obj.delete()
+        data = {}
+        if operator:
+            data["success"] = "Delete language successful"
+        else:
+            data["failure"] = "Delete language failed"
+        return Response(data=data)
 
     def put(self, request, *args, **kwargs):
-        print(request)
-        obj = self.get_object()
+        try:
+            obj = self.get_object()
+        except Exception as exc:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = self.get_serializer(obj, data=request.data, partial=True)
         lookup_field = 'pk'
-        
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "Language updated successfully"})
-
+            return Response({"message": "Update language successful"})
         else:
             return Response({"message": "failed", "details": serializer.errors})
     

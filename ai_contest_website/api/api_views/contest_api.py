@@ -30,24 +30,37 @@ class ContestInfo(generics.GenericAPIView):
     serializer_class = ContestSerializer
 
     def get(self, request, *args, **kwargs):
-        obj = self.get_object()
+        try:
+            obj = self.get_object()
+        except Exception as exc:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = self.get_serializer(obj)
         return Response(serializer.data)
 
     def delete(self, request, *args, **kwargs):
-        obj = self.get_object()
-        obj.delete()
-        return Response("Contest is deleted successful")
+        try:
+            obj = self.get_object()
+        except Exception as exc:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        operator = obj.delete()
+        data = {}
+        if operator:
+            data["success"] = "Delete contest successful"
+        else:
+            data["failure"] = "Delete contest failed"
+        return Response(data=data)
 
     def put(self, request, *args, **kwargs):
-        obj = self.get_object()
+        try:
+            obj = self.get_object()
+        except Exception as exc:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = ContestSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse({
+            return Response({
                 'message': 'Contest is updated successful'
             }, status=status.HTTP_200_OK)
-
-        return JsonResponse({
-            'message': 'Contest is updated unsuccessful'
+        return Response({
+            'message': 'Contest is updated failed'
         }, status=status.HTTP_400_BAD_REQUEST)
