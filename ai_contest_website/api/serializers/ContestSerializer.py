@@ -30,7 +30,18 @@ class ContestSerializer(DjongoModelSerializer):
     def validate(self, data):
         validated_data = data
         return data
+class ContestIdSerializer(DjongoModelSerializer):
+    class Meta:
+        model = Contest
+        fields = ['_id']
 
+    def create(self, validated_data):
+        contest = Contest.objects.create(**validated_data)
+        return contest
+
+    def validate(self, data):
+        validated_data = data
+        return data
 # contest = Contest(title='bkdnContest 1')
 # contest.save()
 # serializer_class = ContestSerializer(contest)

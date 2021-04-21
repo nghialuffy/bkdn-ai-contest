@@ -29,6 +29,15 @@ class LanguageSerializer(DjongoModelSerializer):
         #     raise serializers.ValidationError("finish must occur after start")
         # return data
     # def validated_data(self, value)
+class LanguageIdSerializer(DjongoModelSerializer):
+    class Meta:
+        model = Language
+        fields = ['_id']
+    
+    def create(self, validated_data):
+        language = Language.objects.create(**validated_data)
+        return language
+
 # print("================")
 # list_language = Language.objects.all()
 # serializer_class = LanguageSerializer(list_language, many=True)

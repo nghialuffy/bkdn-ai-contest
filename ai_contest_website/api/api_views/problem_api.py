@@ -48,7 +48,7 @@ class ProblemInfo(generics.GenericAPIView):
         return Response(data=data)
 
     def post(self, request, *args, **kwargs):
-        obj = Problem()
+        obj = Problem(code_test=request.FILES)
         serializer = self.get_serializer(obj, data=request.data, partial=True)
         lookup_field = 'pk'
         if serializer.is_valid():
