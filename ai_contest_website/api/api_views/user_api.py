@@ -91,7 +91,10 @@ class UserLoginView(APIView):
                 refresh = TokenObtainPairSerializer.get_token(user)
                 data = {
                     'refresh_token': str(refresh),
-                    'access_token': str(refresh.access_token)
+                    'access_token': str(refresh.access_token),
+                    'username': user.username,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
                 }
                 return Response(data, status=status.HTTP_200_OK)
 
