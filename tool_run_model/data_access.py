@@ -18,15 +18,15 @@ class DataBase:
     def disconnect(self):
         self.MONGO_CLIENT.close()
 
-    def get_results(self):
+    def get_result(self):
         try:
             if self.AI_CONTEST == None:
                 self.connect()
             query = self.AI_CONTEST["result"].find({
                 "status" : "N"
-            }).sort("time_submit", pymongo.ASCENDING)
+            }).sort("time_submit", pymongo.ASCENDING).limit(1)
             if query != None:
-                return list(query)
+                return list(query)[0]
             else:
                 return None
 
@@ -42,3 +42,14 @@ class DataBase:
             }, upsert = True)
         except Exception as exc:
             print("Error in update_result: %s" % str(exc))
+    def get_language(self, language_id):
+        try:
+            query = self.AI_CONTEST["language"].find_one({
+                "_id" : ObjectId(language_id)
+            })
+            if query != None and "name" in query:
+                return query["name"].lower()
+            else:
+                return None
+        except Exception as exc:
+            print("Error in get_language: %s" % str(exc))
