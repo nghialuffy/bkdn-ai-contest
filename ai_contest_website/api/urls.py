@@ -13,6 +13,8 @@ urlpatterns = [
     path('result/', include('api.routes.ResultRoutes'), name='result'),
     path('login/', UserLoginView.as_view(), name='login'),
     path('register/', UserRegisterView.as_view(), name='register'),
+    path('token/', include('api.routes.TokenRoutes'), name='token')
+    
     # ex: /polls/5/results/
     # path('<int:question_id>/results/', views.results, name='results'),
     # # ex: /polls/5/vote/
