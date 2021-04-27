@@ -4,7 +4,7 @@ from api.models import User
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'role', 'created']
+        fields = ['username', 'role', 'created', 'is_admin', 'is_organizer']
         extra_kwargs = {
             'url': {'view_name': 'user', 'lookup_field': 'username'},
             'users': {'lookup_field': 'username'}
