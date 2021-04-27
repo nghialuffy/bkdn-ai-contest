@@ -52,8 +52,6 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 5,
     'DEFAULT_AUTHENTICATION_CLASSES': (
        'rest_framework_simplejwt.authentication.JWTTokenUserAuthentication',
     ),
@@ -62,6 +60,7 @@ REST_FRAMEWORK = {
 DEBUG = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
+    "http://localhost:3000",
     "http://127.0.0.1:3000"
 ]
 # ALLOWED_HOSTS = [
