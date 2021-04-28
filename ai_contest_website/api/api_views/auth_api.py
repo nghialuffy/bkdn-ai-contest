@@ -12,7 +12,6 @@ class UserInfoLogin(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserLoginRespSerializer
     def get(self, request, *args, **kwargs):
-        username = request.user.username
         userInfo = User.objects.get(_id=request.user.id)
         s_userInfo = self.get_serializer(userInfo)
         return Response(s_userInfo.data)

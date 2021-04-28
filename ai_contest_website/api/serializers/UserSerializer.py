@@ -2,10 +2,10 @@ from rest_meets_djongo.serializers import DjongoModelSerializer
 from rest_framework import serializers
 from api.models import User
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(DjongoModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'role', 'created', 'is_admin', 'is_organizer']
+        fields = ['_id', 'username', 'role', 'created', 'is_admin', 'is_organizer']
         extra_kwargs = {
             'url': {'view_name': 'user', 'lookup_field': 'username'},
             'users': {'lookup_field': 'username'}

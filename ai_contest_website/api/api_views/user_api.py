@@ -15,23 +15,8 @@ from api.permissions.permissions import IsSSOAdmin
 from api.models import User
 from api.serializers.UserSerializer import UserSerializer, RegisterUserSerializer, UserLoginSerializer, UserLoginRespSerializer
 
-class ListModelMixin(object):
-    """
-    List a queryset.
-    """
-    def list(self, request, *args, **kwargs):
-        paginator = PageNumberPagination()
-        paginator.page_size = 2
-        queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset, request)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return paginator.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-class UserList(ListModelMixin, generics.ListCreateAPIView):
+class UserList(generics.ListCreateAPIView):
     authentication_classes = [JWTTokenUserAuthentication]
     permission_classes = [IsSSOAdmin]
     queryset = User.objects.all()
