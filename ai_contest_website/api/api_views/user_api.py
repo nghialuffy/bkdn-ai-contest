@@ -60,6 +60,8 @@ class UserInfo(generics.GenericAPIView):
         obj.delete()
         return Response("Language is deleted successful")
 
+
+
 class UserRegisterView(generics.GenericAPIView):
     def post(self, request):
         serializer = RegisterUserSerializer(data=request.data)
@@ -93,12 +95,9 @@ class UserLoginView(generics.GenericAPIView):
             print(user)
             if user:
                 refresh = TokenObtainPairSerializer.get_token(user)
-                userInfo = User.objects.get(username=serializer.data['username'])
-                s_userInfo = self.get_serializer(userInfo)
                 data = {
                     'refresh_token': str(refresh),
                     'access_token': str(refresh.access_token),
-                    'user': s_userInfo.data
                 }
                 return Response(data, status=status.HTTP_200_OK)
 

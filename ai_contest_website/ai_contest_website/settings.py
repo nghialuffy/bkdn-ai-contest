@@ -25,7 +25,7 @@ SECRET_KEY = 'k0mp-otum%ct_v5ti4t($$^oiaxujof-hfao6is)*549%l&q)!'
 JWT_KEY = '!*RXm9&Wht2Ex7$Uf(PlhSt8hakd8!Lcx&GibGHHW)QLyoh5lD'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=50),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,

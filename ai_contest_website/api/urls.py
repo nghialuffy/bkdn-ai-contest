@@ -13,7 +13,9 @@ urlpatterns = [
     path('result/', include('api.routes.ResultRoutes'), name='result'),
     path('login/', UserLoginView.as_view(), name='login'),
     path('register/', UserRegisterView.as_view(), name='register'),
-    path('token/', include('api.routes.TokenRoutes'), name='token')
+    path('token/', include('api.routes.TokenRoutes'), name='token'),
+    path('auth/', include('api.routes.AuthRoutes'), name='auth'),
+
     
     # ex: /polls/5/results/
     # path('<int:question_id>/results/', views.results, name='results'),
