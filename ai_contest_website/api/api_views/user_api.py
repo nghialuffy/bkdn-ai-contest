@@ -13,7 +13,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 from api.permissions.permissions import IsSSOAdmin
 from api.models import User
-from api.serializers.UserSerializer import UserSerializer, RegisterUserSerializer, UserLoginSerializer
+from api.serializers.UserSerializer import UserSerializer, RegisterUserSerializer, UserLoginSerializer, UserLoginRespSerializer
 
 class ListModelMixin(object):
     """
@@ -77,8 +77,11 @@ class UserRegisterView(generics.GenericAPIView):
                 'errors_code': 400,
             }, status=status.HTTP_400_BAD_REQUEST)
 
-class UserLoginView(APIView):
+class UserLoginView(generics.GenericAPIView):
     permissions = [permissions.AllowAny]
+    serializer_class = UserLoginRespSerializer
+    query_set = User.objects
+
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -90,17 +93,17 @@ class UserLoginView(APIView):
             print(user)
             if user:
                 refresh = TokenObtainPairSerializer.get_token(user)
+                userInfo = User.objects.get(username=serializer.data['username'])
+                s_userInfo = self.get_serializer(userInfo)
                 data = {
                     'refresh_token': str(refresh),
                     'access_token': str(refresh.access_token),
-                    'username': user.username,
-                    'first_name': user.first_name,
-                    'last_name': user.last_name,
+                    'user': s_userInfo.data
                 }
                 return Response(data, status=status.HTTP_200_OK)
 
             return Response({
-                'error_message': 'Email or password is incorrect!',
+                'error_message': 'Username or password is incorrect!',
                 'error_code': 400
             }, status=status.HTTP_400_BAD_REQUEST)
 
@@ -124,6 +127,8 @@ class UserLoginView(APIView):
                     user.is_staff = True
                     user.is_superuser = True
                     user.save()
+                
+                print(user)
                 return user
         return None
 
