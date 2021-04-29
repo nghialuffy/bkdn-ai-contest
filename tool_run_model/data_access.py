@@ -53,3 +53,17 @@ class DataBase:
                 return None
         except Exception as exc:
             print("Error in get_language: %s" % str(exc))
+
+    def get_problem(self, problem_id):
+        try:
+            query = self.AI_CONTEST["problem"].find_one({
+                "_id" : ObjectId(problem_id)
+            },{
+                "_id" : 1,
+                "train_data" : 1,
+                "test_data" : 1,
+                "time_executed_limit" : 1
+            })
+            return query
+        except Exception as exc:
+            print("Error in get_language: %s" % str(exc))
