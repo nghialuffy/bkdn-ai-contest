@@ -1,12 +1,15 @@
 import pickle
 import sys
-model = pickle.load(open("model.pkl", "rb"))
-
-import pandas as pd
-print(sys.argv[1])
-iris = pd.read_csv(sys.argv[1])
 from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
-test_X = iris[['SepalLengthCm','SepalWidthCm','PetalLengthCm','PetalWidthCm']] # taking test data feature
-prediction = model.predict(test_X)
+model = pickle.load(open("model.pkl", "rb"))
+import numpy as np
+import pandas as pd
+inp = sys.stdin.read()
+inp = np.array([inp.split(",")])
+inp = pd.DataFrame(inp, columns = ['SepalLengthCm','SepalWidthCm','PetalLengthCm','PetalWidthCm'])
+# print(type(inp))
+
+# test_X = iris[['SepalLengthCm','SepalWidthCm','PetalLengthCm','PetalWidthCm']] # taking test data feature
+prediction = model.predict(inp)
 # print(list(prediction))
 [print(x) for x in list(prediction)]

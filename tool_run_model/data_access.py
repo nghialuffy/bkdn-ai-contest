@@ -25,14 +25,10 @@ class DataBase:
             query = self.AI_CONTEST["result"].find({
                 "status" : "N"
             }).sort("time_submit", pymongo.ASCENDING).limit(1)
-            if query != None:
-                return list(query)[0]
-            else:
-                return None
-
+            return list(query)[0]
         except Exception as exc:
             print("Error in get_results: %s" % str(exc))
-            
+        return None
     def update_result(self, dict_result):
         try:
             query = self.AI_CONTEST["result"].update_one({
