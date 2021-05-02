@@ -15,6 +15,7 @@ urlpatterns = [
     path('register/', UserRegisterView.as_view(), name='register'),
     path('token/', include('api.routes.TokenRoutes'), name='token'),
     path('auth/', include('api.routes.AuthRoutes'), name='auth'),
+    path('document/', include('api.routes.DocumentRoutes'), name='document'),
 
     
     # ex: /polls/5/results/

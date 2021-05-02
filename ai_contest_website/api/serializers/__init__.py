@@ -3,3 +3,4 @@ from .LanguageSerializer import LanguageSerializer
 from .ProblemSerializer import ProblemSerializer
 from .ResultSerializer import ResultSerializer
 from .UserSerializer import UserSerializer, RegisterUserSerializer
+from .HtmlDocumentSerializer import HtmlDocumentSerializer
