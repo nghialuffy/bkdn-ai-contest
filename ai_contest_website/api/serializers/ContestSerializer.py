@@ -2,12 +2,12 @@ from rest_meets_djongo.serializers import DjongoModelSerializer
 from api.models import Contest
 from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
-from api.serializers.UserSerializer import UserSerializer
+from api.serializers.UserSerializer import UserListContestSerializer
 from api.serializers.LanguageSerializer import LanguageSerializer
 class ContestSerializer(DjongoModelSerializer):
-    created_user = UserSerializer()
+    created_user = UserListContestSerializer()
     language = LanguageSerializer(many=True)
-    constestants = UserSerializer(many=True)
+    constestants = UserListContestSerializer(many=True)
     class Meta:
         model = Contest
         fields = ('_id', 'title', 'created_user', 'created', 'constestants', 'language', 'time_start', 'time_end')

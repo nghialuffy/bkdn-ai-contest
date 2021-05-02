@@ -30,6 +30,11 @@ class UserLoginRespSerializer(DjongoModelSerializer):
         model = User
         fields = ['_id', 'first_name', 'last_name', 'username']
 
+class UserListContestSerializer(DjongoModelSerializer):
+    class Meta:
+        model = User
+        fields = ['_id', 'first_name', 'last_name', 'username']
+
 class UserIdSerializer(DjongoModelSerializer):
     class Meta:
         model = User
