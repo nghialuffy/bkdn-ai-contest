@@ -37,6 +37,8 @@ class UserIdSerializer(DjongoModelSerializer):
     def create(self, validated_data):
         user = User.objects.create(**validated_data)
         return user
+    def get(self, validated_data):
+        user = User.objects.get(**validated_data)
 
 class RegisterUserSerializer(serializers.ModelSerializer):
     class Meta:

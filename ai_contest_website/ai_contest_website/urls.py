@@ -16,6 +16,9 @@ Including another URLconf
 
 from django.urls import include, path
 from django.urls import path
+from django.conf.urls.static import static
+from ai_contest_website import settings
 urlpatterns = [
     path('api/', include('api.urls'))
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

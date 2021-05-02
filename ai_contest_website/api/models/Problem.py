@@ -13,7 +13,7 @@ class Problem(models.Model):
     description = models.TextField()
     score = models.FloatField()
     # enctype="multipart/form-data"
-    code_test = models.FileField(upload_to="code_test/%s" % contest)
+    code_test = models.FileField(upload_to="code_test/%s" % contest.__str__)
     data_sample = models.TextField()
     train_data = models.TextField()
     test_data = models.TextField()
