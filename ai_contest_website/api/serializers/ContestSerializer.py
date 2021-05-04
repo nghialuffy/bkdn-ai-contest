@@ -2,15 +2,15 @@ from rest_meets_djongo.serializers import DjongoModelSerializer
 from api.models import Contest
 from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
-from api.serializers.UserSerializer import UserSerializer
+from api.serializers.UserSerializer import UserIdSerializer
 from api.serializers.LanguageSerializer import LanguageSerializer
 class ContestSerializer(DjongoModelSerializer):
-    created_user = UserSerializer()
-    language = LanguageSerializer(many=True)
-    constestants = UserSerializer(many=True)
+    # created_user = UserIdSerializer()
+    # language = LanguageSerializer(many=True)
+    contestants = UserIdSerializer(many=True)
     class Meta:
         model = Contest
-        fields = ('_id', 'title', 'created_user', 'created', 'constestants', 'language', 'time_start', 'time_end')
+        fields = ('_id', 'title', 'created', 'contestants',  'time_start', 'time_end')
 
     def create(self, validated_data):
         contest = Contest.objects.create(**validated_data)
@@ -18,10 +18,10 @@ class ContestSerializer(DjongoModelSerializer):
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
-        instance.created_user = validated_data.get('created_user', instance.created_user)
+        # instance.created_user = validated_data.get('created_user', instance.created_user)
         instance.created = validated_data.get('created', instance.created)
-        instance.constestants = validated_data.get('constestants', instance.constestants)
-        instance.language = validated_data.get('language', instance.language)
+        instance.contestants = validated_data.get('contestants', instance.contestants)
+        # instance.language = validated_data.get('language', instance.language)
         instance.time_start = validated_data.get('time_start', instance.time_start)
         instance.time_end = validated_data.get('time_end', instance.time_end)
         instance.save()

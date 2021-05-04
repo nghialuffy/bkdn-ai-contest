@@ -64,3 +64,18 @@ class ContestInfo(generics.GenericAPIView):
         return Response({
             'message': 'Contest is updated failed'
         }, status=status.HTTP_400_BAD_REQUEST)
+
+class AttendedContest(generics.GenericAPIView):
+    queryset = Contest.objects.all()
+    serializer_class = ContestSerializer
+    def get(self, request, *args, **kwargs):
+        id = self.kwargs['id']
+        print("id: ", id)
+        queryset = self.get_queryset()
+        # queryset = queryset.filter(title='BKDN AI')
+        # testList = ["BKDN AI","bkdnContest 1"]
+        queryset = queryset.filter(contestants=id)
+        # queryset = queryset.filter(username__in = contestList)
+        # queryset = queryset.filter(contestants=username)
+        serializer = ContestSerializer(queryset, many=True)
+        return Response(serializer.data)

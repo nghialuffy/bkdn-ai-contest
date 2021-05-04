@@ -13,24 +13,10 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 from api.permissions.permissions import IsSSOAdmin
 from api.models import User
-from api.serializers.UserSerializer import UserSerializer, RegisterUserSerializer, UserLoginSerializer
+from api.serializers.UserSerializer import UserSerializer, RegisterUserSerializer, UserLoginSerializer, UserLoginRespSerializer
 
-class ListModelMixin(object):
-    """
-    List a queryset.
-    """
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-        print('sdddddddd')
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-class UserList(ListModelMixin, generics.ListCreateAPIView):
+class UserList(generics.ListCreateAPIView):
     authentication_classes = [JWTTokenUserAuthentication]
     permission_classes = [IsSSOAdmin]
     queryset = User.objects.all()
@@ -59,6 +45,8 @@ class UserInfo(generics.GenericAPIView):
         obj.delete()
         return Response("Language is deleted successful")
 
+
+
 class UserRegisterView(generics.GenericAPIView):
     def post(self, request):
         serializer = RegisterUserSerializer(data=request.data)
@@ -76,8 +64,11 @@ class UserRegisterView(generics.GenericAPIView):
                 'errors_code': 400,
             }, status=status.HTTP_400_BAD_REQUEST)
 
-class UserLoginView(APIView):
+class UserLoginView(generics.GenericAPIView):
     permissions = [permissions.AllowAny]
+    serializer_class = UserLoginRespSerializer
+    query_set = User.objects
+
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -91,12 +82,12 @@ class UserLoginView(APIView):
                 refresh = TokenObtainPairSerializer.get_token(user)
                 data = {
                     'refresh_token': str(refresh),
-                    'access_token': str(refresh.access_token)
+                    'access_token': str(refresh.access_token),
                 }
                 return Response(data, status=status.HTTP_200_OK)
 
             return Response({
-                'error_message': 'Email or password is incorrect!',
+                'error_message': 'Username or password is incorrect!',
                 'error_code': 400
             }, status=status.HTTP_400_BAD_REQUEST)
 
@@ -120,6 +111,8 @@ class UserLoginView(APIView):
                     user.is_staff = True
                     user.is_superuser = True
                     user.save()
+                
+                print(user)
                 return user
         return None
 

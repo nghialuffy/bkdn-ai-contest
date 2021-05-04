@@ -1,10 +1,11 @@
+from rest_meets_djongo.serializers import DjongoModelSerializer
 from rest_framework import serializers
 from api.models import User
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(DjongoModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'role', 'created']
+        fields = ['_id', 'username', 'role', 'created', 'is_admin', 'is_organizer']
         extra_kwargs = {
             'url': {'view_name': 'user', 'lookup_field': 'username'},
             'users': {'lookup_field': 'username'}
@@ -24,13 +25,20 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         validated_data = data
         return validated_data
 
-class UserIdSerializer(serializers.HyperlinkedModelSerializer):
+class UserLoginRespSerializer(DjongoModelSerializer):
+    class Meta:
+        model = User
+        fields = ['_id', 'first_name', 'last_name', 'username']
+
+class UserIdSerializer(DjongoModelSerializer):
     class Meta:
         model = User
         fields = ['_id']
     def create(self, validated_data):
         user = User.objects.create(**validated_data)
         return user
+    def get(self, validated_data):
+        user = User.objects.get(**validated_data)
 
 class RegisterUserSerializer(serializers.ModelSerializer):
     class Meta:
