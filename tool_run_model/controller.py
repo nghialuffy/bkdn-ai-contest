@@ -101,16 +101,17 @@ def process_result():
     try:
         db = DataBase()
         result = db.get_result()
-        result["status"] = "I"
-        db.update_result(result)
-        language = db.get_language(str(result["language_id"]))
-        problem = db.get_problem(result["problem_id"])
-        input_test_file = problem["train_data"]     # input.csv
-        result_file = problem["test_data"]          # output.csv
-        start_time = datetime.now().timestamp()
-        result["accuracy"], result["result_info"] = excute_code(result["path_code"], language, result["code_test"], result["code_train"], input_test_file, result_file)
-        result["time_excute"] = round(datetime.now().timestamp() - start_time, 5)
-        result["status"] = "S"
-        db.update_result(result)
+        if result != None:
+            result["status"] = "I"
+            db.update_result(result)
+            language = db.get_language(str(result["language_id"]))
+            problem = db.get_problem(result["problem_id"])
+            input_test_file = problem["train_data"]     # input.csv
+            result_file = problem["test_data"]          # output.csv
+            start_time = datetime.now().timestamp()
+            result["accuracy"], result["result_info"] = excute_code(result["path_code"], language, result["code_test"], result["code_train"], input_test_file, result_file)
+            result["time_excute"] = round(datetime.now().timestamp() - start_time, 5)
+            result["status"] = "S"
+            db.update_result(result)
     except Exception as exc:
         print("Error in process result: %s" % str(exc))

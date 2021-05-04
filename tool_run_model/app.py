@@ -1,6 +1,7 @@
 from controller import process_result
 from time import sleep
 if __name__ =="__main__":
+    print("Running")
     while True:
         try:
             process_result()

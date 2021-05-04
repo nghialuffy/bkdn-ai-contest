@@ -25,10 +25,9 @@ class DataBase:
             query = self.AI_CONTEST["result"].find({
                 "status" : "N"
             }).sort("time_submit", pymongo.ASCENDING).limit(1)
-            return list(query)[0]
+            return next(iter(list(query)), None)
         except Exception as exc:
-            if "'NoneType' object does not support item assignment" not in str(exc):
-                print("Error in get_results: %s" % str(exc))
+            print("Error in get_results: %s" % str(exc))
         return None
     def update_result(self, dict_result):
         try:
