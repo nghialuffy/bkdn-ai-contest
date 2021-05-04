@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-env
-venv
-
-__pycache__
-=======
 # Byte-compiled / optimized / DLL files
 __pycache__/
+.vscode/
 *.py[cod]
 *$py.class
 
@@ -157,4 +152,3 @@ modern.jsonp
 resources/sass/.sass-cache/
 resources/.arch-internal-preview.css
 .arch-internal-preview.css
->>>>>>> 64b465ea0e5478da62761ad4341ce4fcb4ed15c2

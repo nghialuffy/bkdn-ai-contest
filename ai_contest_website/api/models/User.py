@@ -1,27 +1,26 @@
 from djongo import models
-from api.models import Contest
 
 class User(models.Model):
     _id = models.ObjectIdField()
-    username = models.CharField(max_length=50)
+    username = models.CharField(max_length=50, unique=True)
+    first_name = models.TextField(max_length=50, default="")
+    last_name = models.TextField(max_length=50, default="")
+
     password = models.TextField()
-    role = models.CharField(max_length=15)
+    role = models.TextField()
+    # role = models.ManyToManyField(Role)
     created = models.DateTimeField(auto_now_add=True)
-    ## Contest contain many User
-    contests = models.ForeignKey(
-        'Contest',
-        on_delete=models.DO_NOTHING,
-    )    
+    is_admin = models.BooleanField(default=False)
+    is_organizer = models.BooleanField(default=False)
+    url = models.URLField()
+    
+    def __str__(self):
+        return self.username
     class Meta:
         db_table = 'user'
-
-    def save(self, *args, **kwargs):
-        # if not hasattr(self, 'id') or self._id == '':
-        #     self.id = User.get_new_id()
-        super(User, self).save(**kwargs)
 
 
 
 # e = User(username='bkdn', password='123',role='admin')
-# e.save()
-print(list(User.objects.all()))
+# # e.save()
+# print(list(User.objects.all()))
