@@ -27,7 +27,8 @@ class DataBase:
             }).sort("time_submit", pymongo.ASCENDING).limit(1)
             return list(query)[0]
         except Exception as exc:
-            print("Error in get_results: %s" % str(exc))
+            if "'NoneType' object does not support item assignment" not in str(exc):
+                print("Error in get_results: %s" % str(exc))
         return None
     def update_result(self, dict_result):
         try:
