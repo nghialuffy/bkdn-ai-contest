@@ -111,5 +111,3 @@ def process_result():
     result["time_excute"] = round(datetime.now().timestamp() - start_time, 5)
     result["status"] = "S"
     db.update_result(result)
-
-process_result()
