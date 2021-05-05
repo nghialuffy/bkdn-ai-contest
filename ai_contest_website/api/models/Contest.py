@@ -6,8 +6,8 @@ class Contest(models.Model):
     title = models.CharField(max_length=50)
     created_user = models.ForeignKey("user", on_delete=models.CASCADE, null=False, related_name='created_user')
     created = models.DateTimeField(auto_now_add=True)
-    constestants = models.ManyToManyField("user", related_name='contestants')
-    language = models.ManyToManyField("language")
+    contestants = models.ManyToManyField("user", related_name='contestants')
+    # language = models.ManyToManyField("language")
     time_start = models.DateTimeField()
     time_end = models.DateTimeField()
     # created_by = models.OneToOneField(
@@ -18,6 +18,8 @@ class Contest(models.Model):
         db_table = 'contest'
     # def __str__(self):
     #     return self
+    def __str__(self):
+        return self.title 
 
     def save(self, *args, **kwargs):
         super(Contest, self).save(**kwargs)
