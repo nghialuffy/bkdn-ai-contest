@@ -16,7 +16,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-    
 class ContestList(generics.ListCreateAPIView):
     queryset = Contest.objects.all()
     serializer_class = ContestSerializer
@@ -26,18 +25,19 @@ class ContestList(generics.ListCreateAPIView):
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
-        # user = User.objects.get(pk=request.user.id)
-        # request.data["created_user"] = {'id':request.user.id}
-        print(request.user.id)
+        # Get created user by auth token in header
         user = User.objects.filter(pk=request.user.id).first()
-        # request.data['created_user'] = user
-        print(request.data)
+        # Copy QuerySet to temp data 'QuerySet is immun..'. 
+        # We can modified field in QuerySet to pass isValid() by using objectID
+        # isValid() require created user is a object ID
         temp_request = request.data.copy()
-        temp_request['created_user'] = request.user.id
+        temp_request['created_user'] = user._id
         print(temp_request)
         serializer = ContestSerializer(data=temp_request)
         if serializer.is_valid():
             print('valided')
+            # created user require a User instance not ObjectID
+            serializer.validated_data['created_user'] = user
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
