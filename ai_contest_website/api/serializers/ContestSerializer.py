@@ -4,6 +4,7 @@ from api.models import Contest
 from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
 from api.serializers.UserSerializer import UserIdSerializer
+from api.serializers.UserSerializer import UserListContestSerializer
 from api.serializers.LanguageSerializer import LanguageSerializer
 from rest_framework import serializers
 
@@ -63,6 +64,12 @@ class ContestIdSerializer(DjongoModelSerializer):
         validated_data = data
         # validated_data['created_user'] = JSONFIeld.to_internal_value(data['created_user'])
         return data
+
+class ContestAttendedSerializer(DjongoModelSerializer):
+    class Meta:
+        model = Contest
+        fields = ('_id', 'title')
+
 # contest = Contest(title='bkdnContest 1')
 # contest.save()
 # serializer_class = ContestSerializer(contest)
