@@ -10,13 +10,13 @@ class Problem(models.Model):
         to=Language, 
         on_delete=models.DO_NOTHING
     )
-    description = models.TextField()
+    description = models.FileField(upload_to="contest/%s" % contest)
     score = models.FloatField()
     # enctype="multipart/form-data"
-    code_test = models.FileField(upload_to="code_test/%s" % contest.__str__)
-    data_sample = models.TextField()
-    train_data = models.TextField()
-    test_data = models.TextField()
+    code_test = models.FileField(upload_to="contest/%s" % contest)
+    data_sample = models.FileField(upload_to="contest/%s" % contest)
+    train_data = models.FileField(upload_to="contest/%s" % contest)
+    test_data = models.FileField(upload_to="contest/%s" % contest)
     time_executed_limit = models.FloatField()
 
     class Meta:

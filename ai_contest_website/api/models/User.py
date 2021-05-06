@@ -14,12 +14,14 @@ class User(models.Model):
     is_admin = models.BooleanField(default=False)
     is_organizer = models.BooleanField(default=False)
     url = models.URLField()
-
+    objects = models.DjongoManager()
     def __str__(self):
         return self.username
 
     class Meta:
         db_table = 'user'
+
+
 
 # e = User(username='bkdn', password='123',role='admin')
 # # e.save()

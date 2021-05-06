@@ -1,9 +1,9 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-
-from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
-from api.models import Language
+from rest_framework_simplejwt.models import TokenUser
+from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication, JWTAuthentication
+from api.models import Language, User
 from api.permissions.permissions import IsSSOAdmin
 from api.serializers.LanguageSerializer import LanguageSerializer
 from bson import ObjectId
@@ -17,6 +17,11 @@ class LanguageList(generics.ListCreateAPIView):
     # print(queryset)
     def list(self, request):
         # Note the use of `get_queryset()` instead of `self.queryset`
+        # TokenUser.
+        print('***********************')
+        print(request.user.id)
+        user = User.objects.get(pk=request.user.id)
+        print(user.username)
         queryset = self.get_queryset()
         serializer = LanguageSerializer(queryset, many=True)
         return Response(serializer.data)
@@ -33,6 +38,7 @@ class LanguageInfo(generics.GenericAPIView):
             obj = self.get_object()
         except Exception as exc:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        user = JWTAuthentication.get_user(request)
         serializer = self.get_serializer(obj)
         return Response(serializer.data)
 

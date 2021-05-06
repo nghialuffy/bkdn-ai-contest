@@ -15,8 +15,6 @@ class UserSerializer(DjongoModelSerializer):
         }
 
     def create(self, validated_data):
-        print('created')
-        print(validated_data)
         user = User.objects.create(**validated_data)
         return user
 
@@ -52,6 +50,8 @@ class UserIdSerializer(DjongoModelSerializer):
     def create(self, validated_data):
         user = User.objects.create(**validated_data)
         return user
+    def get(self, validated_data):
+        user = User.objects.get(**validated_data)
 
 
 class RegisterUserSerializer(serializers.ModelSerializer):
@@ -64,17 +64,11 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        print('sdfsdfsdfsdfsdfds')
         user = User.objects.create(**validated_data)
-        # print(user)
-        # user.attended_contest.set()
-        # print('sdfsdf')
-        # user['attended_contest'] = set()
         return user
 
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.name)
-        # instance.role = 'user'
         instance.password = validated_data.get('password', instance.password)
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
@@ -84,12 +78,6 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         validated_data = data
-
-        print('sdfsdf')
-        print(validated_data)
-
-        print(validated_data)
-        # validated_data['role'] = 'user'
         return validated_data
 
 

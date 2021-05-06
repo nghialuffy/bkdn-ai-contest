@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.core import serializers
-from api.models import Contest
+from api.models import Contest, User
 from api.serializers.UserSerializer import UserSerializer
 from rest_framework.renderers import JSONRenderer
 from api.serializers.ContestSerializer import ContestSerializer
@@ -24,6 +24,24 @@ class ContestList(generics.ListCreateAPIView):
         queryset = self.get_queryset()
         serializer = ContestSerializer(queryset, many=True)
         return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        # user = User.objects.get(pk=request.user.id)
+        # request.data["created_user"] = {'id':request.user.id}
+        print(request.user.id)
+        user = User.objects.filter(pk=request.user.id).first()
+        # request.data['created_user'] = user
+        print(request.data)
+        temp_request = request.data.copy()
+        temp_request['created_user'] = request.user.id
+        print(temp_request)
+        serializer = ContestSerializer(data=temp_request)
+        if serializer.is_valid():
+            print('valided')
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 class ContestInfo(generics.GenericAPIView):
     queryset = Contest.objects
@@ -79,4 +97,3 @@ class AttendedContest(generics.GenericAPIView):
         # queryset = queryset.filter(contestants=username)
         serializer = ContestSerializer(queryset, many=True)
         return Response(serializer.data)
-
