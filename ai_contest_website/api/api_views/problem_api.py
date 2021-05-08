@@ -21,6 +21,9 @@ class ProblemList(generics.ListCreateAPIView):
     def list(self, request):
         # Note the use of `get_queryset()` instead of `self.queryset`
         queryset = self.get_queryset()
+        if request.GET.get('contest_id'):
+            contest_id = request.GET.get('contest_id', '')
+            queryset = queryset.filter(contest_id=contest_id)
         serializer = ProblemSerializer(queryset, many=True)
         return Response(serializer.data)
 
