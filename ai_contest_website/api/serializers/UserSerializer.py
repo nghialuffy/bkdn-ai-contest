@@ -8,7 +8,7 @@ class UserSerializer(DjongoModelSerializer):
     # contest_attended_serializer = ContestAttendedSerializer(many=True)
     class Meta:
         model = User
-        fields = ['_id', 'username', 'role', 'created', 'is_admin', 'is_organizer', 'attended_contest']
+        fields = ['_id', 'username', 'role', 'created', 'is_admin', 'is_organizer']
         extra_kwargs = {
             'url': {'view_name': 'user', 'lookup_field': 'username'},
             'users': {'lookup_field': 'username'}
