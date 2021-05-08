@@ -28,7 +28,7 @@ class ContestSerializer(DjongoModelSerializer):
     created_user = ObjectIdField()
     class Meta:
         model = Contest
-        fields = ('_id', 'title', 'created' , 'created_user', 'time_start', 'time_end')
+        fields = ('_id', 'title', 'created', 'created_user', 'time_start', 'time_end')
         # fields = '__all__'
 
     def create(self, validated_data):
@@ -70,6 +70,11 @@ class ContestAttendedSerializer(DjongoModelSerializer):
         model = Contest
         fields = ('_id', 'title')
 
+class ContestListSerializer(DjongoModelSerializer):
+    created_user = UserListContestSerializer()
+    class Meta:
+        model = Contest
+        fields = ('_id', 'title', 'created', 'created_user', 'time_start', 'time_end')
 # contest = Contest(title='bkdnContest 1')
 # contest.save()
 # serializer_class = ContestSerializer(contest)

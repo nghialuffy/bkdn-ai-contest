@@ -16,12 +16,16 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+from api.serializers.ContestSerializer import ContestListSerializer
+
+
 class ContestList(generics.ListCreateAPIView):
     queryset = Contest.objects.all()
     serializer_class = ContestSerializer
     def list(self, request):
         queryset = self.get_queryset()
-        serializer = ContestSerializer(queryset, many=True)
+        serializer = ContestListSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
