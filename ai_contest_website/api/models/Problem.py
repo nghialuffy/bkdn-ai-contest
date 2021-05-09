@@ -12,7 +12,6 @@ class Problem(models.Model):
     )
     description = models.FileField(upload_to="contest/%s" % contest)
     score = models.FloatField()
-    # enctype="multipart/form-data"
     code_test = models.FileField(upload_to="contest/%s" % contest)
     data_sample = models.FileField(upload_to="contest/%s" % contest)
     train_data = models.FileField(upload_to="contest/%s" % contest)

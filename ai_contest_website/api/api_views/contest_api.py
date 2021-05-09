@@ -21,6 +21,7 @@ from api.serializers.ContestSerializer import ContestListSerializer
 
 
 class ContestList(generics.ListCreateAPIView):
+    
     queryset = Contest.objects.all()
     serializer_class = ContestSerializer
     def list(self, request):
@@ -36,10 +37,10 @@ class ContestList(generics.ListCreateAPIView):
         # isValid() require created user is a object ID
         temp_request = request.data.copy()
         temp_request['created_user'] = user._id
-        print(temp_request)
+        
         serializer = ContestSerializer(data=temp_request)
         if serializer.is_valid():
-            print('valided')
+            
             # created user require a User instance not ObjectID
             serializer.validated_data['created_user'] = user
             serializer.save()

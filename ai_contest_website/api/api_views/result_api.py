@@ -6,10 +6,10 @@ from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.core import serializers
-from api.models import Result
+from api.models import Result, Problem, Contest, User, Language
 from api.serializers.UserSerializer import UserSerializer
 from rest_framework.renderers import JSONRenderer
-from api.serializers.ResultSerializer import ResultSerializer
+from api.serializers.ResultSerializer import ResultSerializer, ResultSunmitSerializer
 
 class ResultList(generics.ListCreateAPIView):
     queryset = Result.objects.all()
@@ -21,6 +21,27 @@ class ResultList(generics.ListCreateAPIView):
         serializer = ResultSerializer(queryset, many=True)
         return Response(serializer.data)
 
+
+    def create(self, request, *args, **kwargs):
+        # get User
+        user = User.objects.filter(pk=request.user.id).first()
+        print(user)
+        problem = Problem.objects.filter(pk=request.data['problem']).first()
+        print(problem)
+        language = Language.objects.filter(pk=request.data['language']).first()
+        temp_queryset = request.data.copy()
+        temp_queryset['created_user']  = user._id
+        serializer = ResultSunmitSerializer(data=temp_queryset)
+        if serializer.is_valid():
+            print('valided')
+            serializer.validated_data['created_user'] = user
+            serializer.validated_data['problem'] = problem
+            serializer.validated_data['language'] = language
+            print(serializer.validated_data)
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class ResultInfo(generics.GenericAPIView):
     queryset = Result.objects
     serializer_class = ResultSerializer
@@ -45,12 +66,12 @@ class ResultInfo(generics.GenericAPIView):
             data["message"] = "Delete result failed"
         return Response(data=data)
 
-    def post(self, request, *args, **kwargs):
-        obj = Result()
-        serializer = self.get_serializer(obj, data=request.data, partial=True)
-        lookup_field = 'pk'
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status = status.HTTP_201_CREATE)
-        else:
-            return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    # def post(self, request, *args, **kwargs):
+    #     obj = Result()
+    #     serializer = self.get_serializer(obj, data=request.data, partial=True)
+    #     lookup_field = 'pk'
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status = status.HTTP_201_CREATE)
+    #     else:
+    #         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)

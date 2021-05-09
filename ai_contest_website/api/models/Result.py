@@ -6,7 +6,7 @@ from api.models import Contest, Language, Problem
 class Result(models.Model):
     _id = models.ObjectIdField()
     problem = models.ForeignKey("problem", on_delete=models.CASCADE)
-    created_user = models.ForeignKey("user", on_delete=models.CASCADE)
+    created_user = models.ForeignKey("user", on_delete=models.CASCADE,related_name='result_created_user')
     model_file = models.FileField(upload_to='result/')
     code_test = models.FileField(upload_to='result/')
     code_train = models.FileField(upload_to='result/')

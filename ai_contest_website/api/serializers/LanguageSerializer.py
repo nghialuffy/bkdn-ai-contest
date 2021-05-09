@@ -1,4 +1,5 @@
 from rest_meets_djongo.serializers import DjongoModelSerializer
+from rest_meets_djongo import serializers
 from api.models import Language
 from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
@@ -30,13 +31,14 @@ class LanguageSerializer(DjongoModelSerializer):
         # return data
     # def validated_data(self, value)
 class LanguageIdSerializer(DjongoModelSerializer):
+    _id = serializers.drf_ser.StringRelatedField()
     class Meta:
         model = Language
         fields = ['_id']
     
-    def create(self, validated_data):
-        language = Language.objects.create(**validated_data)
-        return language
+    # def create(self, validated_data):
+    #     language = Language.objects.create(**validated_data)
+    #     return language
 
 # print("================")
 # list_language = Language.objects.all()

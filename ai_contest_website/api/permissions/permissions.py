@@ -65,3 +65,9 @@ class IsOrganizer(BasePermission):
             return IsOrganizer
         except AssertionError:
             return False
+# class IsOrganizerOrReadOnly(BasePermission):
+#     """
+#     The request is authenticated as a Organizer or a read-only request
+#     """
+#     def has_permission(self, request, view):
+#         return super().has_permission(request, view)

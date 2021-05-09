@@ -9,10 +9,6 @@ class Contest(models.Model):
     contestants = models.ManyToManyField("user", related_name='contestants', )
     time_start = models.DateTimeField()
     time_end = models.DateTimeField()
-    # created_by = models.OneToOneField(
-    #     User,
-    #     on_delete=models.CASCADE,
-    # )
     class Meta:
         db_table = 'contest'
     # def __str__(self):

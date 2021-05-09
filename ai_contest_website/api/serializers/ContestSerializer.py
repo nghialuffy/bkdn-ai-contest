@@ -25,7 +25,7 @@ from rest_framework import serializers
 #             raise InvalidId
 #         return smart_text(value)
 class ContestSerializer(DjongoModelSerializer):
-    created_user = ObjectIdField()
+    created_user = serializers.StringRelatedField()
     class Meta:
         model = Contest
         fields = ('_id', 'title', 'created', 'created_user', 'time_start', 'time_end')
@@ -33,8 +33,8 @@ class ContestSerializer(DjongoModelSerializer):
 
     def create(self, validated_data):
         contest = Contest.objects.create(**validated_data)
-        print('***************************')
-        print(validated_data['created_user'])
+        # print('***************************')
+        # print(validated_data['created_user'])
         return contest
 
     def update(self, instance, validated_data):
