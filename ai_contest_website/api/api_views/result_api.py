@@ -3,12 +3,8 @@ from rest_framework import permissions, viewsets, status, views, generics
 from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from django.core import serializers
 from api.models import Result, Problem, Contest, User, Language
-from api.serializers.UserSerializer import UserSerializer
-from rest_framework.renderers import JSONRenderer
 from api.serializers.ResultSerializer import ResultSerializer, ResultSunmitSerializer
 
 class ResultList(generics.ListCreateAPIView):
