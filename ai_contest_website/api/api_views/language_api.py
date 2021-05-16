@@ -4,13 +4,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.models import TokenUser
 from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication, JWTAuthentication
 from api.models import Language, User
-from api.permissions.permissions import IsSSOAdmin
+from api.permissions.permissions import IsSSOAdmin, IsOrganizerOrReadOnly, IsAdminOrReadOnly
 from api.serializers.LanguageSerializer import LanguageSerializer
 from bson import ObjectId
 
 class LanguageList(generics.ListCreateAPIView):
     authentication_classes = [JWTTokenUserAuthentication]
-    permission_classes = [IsSSOAdmin]
+    permission_classes = [IsAdminOrReadOnly]
     queryset = Language.objects.all()
     serializer_class = LanguageSerializer
 
