@@ -4,6 +4,7 @@ class Contest(models.Model):
 
     _id = models.ObjectIdField()
     title = models.CharField(max_length=50)
+    description = models.TextField()
     created_user = models.ForeignKey('user', on_delete=models.CASCADE, null=False, related_name='created_user')
     created = models.DateTimeField(auto_now_add=True)
     contestants = models.ManyToManyField("user", related_name='contestants', )

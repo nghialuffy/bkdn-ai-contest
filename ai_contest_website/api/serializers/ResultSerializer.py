@@ -1,5 +1,5 @@
 from rest_meets_djongo.serializers import DjongoModelSerializer
-from rest_meets_djongo.fields import ObjectIdField
+from rest_meets_djongo import serializers as _serializers
 from rest_framework import serializers
 from api.models import Result, Problem, User, Language
 from api.serializers.UserSerializer import UserSerializer, UserIdSerializer
@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
 
 class ResultSerializer(DjongoModelSerializer):
-    problem = serializers.StringRelatedField()
+    problem = _serializers.ObjectIdField()
     created_user = serializers.StringRelatedField()
     language = serializers.StringRelatedField()
 

@@ -7,7 +7,7 @@ from api.serializers.ContestSerializer import ContestSerializer, ContestIdSerial
 from api.serializers.LanguageSerializer import LanguageSerializer, LanguageIdSerializer
 class ProblemSerializer(DjongoModelSerializer):
     contest = serializers.drf_ser.StringRelatedField()
-    languages = LanguageIdSerializer(many=True, read_only=True)
+    languages = LanguageIdSerializer(many=True)
     class Meta:
         model = Problem
         fields = ['_id', 'title', 'description', 'score', 
@@ -32,8 +32,8 @@ class ProblemSerializer(DjongoModelSerializer):
         return instance
         
     def validate(self, data):
-        if data == "" or data == None:
-            data = ""
+        # if data == "" or data == None:
+        #     data = ""
         validated_data = data
         print('======= Valided ======')
         print(validated_data)

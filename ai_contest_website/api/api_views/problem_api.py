@@ -25,7 +25,7 @@ class ProblemList(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         # Get contest object
         contest = Contest.objects.filter(pk=request.data['contest']).first()
-
+        queryset =self.get_queryset()
         # Get language object
         languages = request.data['languages'].split(', ')
         language_objects = list()
@@ -35,7 +35,7 @@ class ProblemList(generics.ListCreateAPIView):
         print(language_objects)
 
         temp_queryset = request.data.copy()
-        temp_queryset['languages'] = languages
+        temp_queryset['languages'] = language_objects
         print(temp_queryset)
         serializer = ProblemSerializer(data=temp_queryset)
         if serializer.is_valid():
@@ -43,7 +43,9 @@ class ProblemList(generics.ListCreateAPIView):
             serializer.validated_data['contest'] = contest
             serializer.validated_data['languages'] = language_objects
             print(serializer.validated_data)
+            
             serializer.save()
+            print('------------------------------------saved')
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
