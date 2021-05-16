@@ -23,7 +23,6 @@ class Problem(models.Model):
 
     def __str__(self):
         return self.title 
-        super(Problem, self).save(**kwargs)
 
 # c = Contest.objects.get(title='BKDN AI')
 # l1 = Language.objects.get(name='Python') 

@@ -25,7 +25,7 @@ class ResultList(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         # get User
         user = User.objects.filter(pk=request.user.id).first()
-        print(user)
+        print(request.user.id)
         problem = Problem.objects.filter(pk=request.data['problem']).first()
         print(problem)
         language = Language.objects.filter(pk=request.data['language']).first()

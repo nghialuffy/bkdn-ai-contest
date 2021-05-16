@@ -16,7 +16,7 @@ class IsSSOAdmin(BasePermission):
             if isinstance(request.user, TokenUser):
                 user_set = User.objects.filter(_id=user.id)
                 if user_set.exists():
-                    print('sdfsdf')
+                    # print('sdfsdf')
                     print(user_set.first().is_admin)
                     user = user_set.first()
                 else:
