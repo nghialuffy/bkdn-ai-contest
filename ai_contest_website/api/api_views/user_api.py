@@ -11,14 +11,17 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 from api.permissions.permissions import IsSSOAdmin
 from api.models import User, Contest
-from api.serializers.UserSerializer import UserSerializer, RegisterUserSerializer, UserLoginSerializer,UserLoginRespSerializer
+from api.serializers.UserSerializer import UserSerializer, RegisterUserSerializer, UserLoginSerializer, \
+    UserLoginRespSerializer
 from api.serializers import ContestAttendedSerializer
+
 
 class UserList(generics.ListCreateAPIView):
     authentication_classes = [JWTTokenUserAuthentication]
     permission_classes = [IsSSOAdmin]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
@@ -28,6 +31,7 @@ class UserList(generics.ListCreateAPIView):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
 
 class UserInfo(generics.GenericAPIView):
     queryset = User.objects
@@ -41,8 +45,7 @@ class UserInfo(generics.GenericAPIView):
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
         obj.delete()
-        return Response("Language is deleted successful")
-
+        return Response({"detail": "User is deleted successful"})
 
 
 class UserRegisterView(generics.GenericAPIView):
@@ -52,7 +55,7 @@ class UserRegisterView(generics.GenericAPIView):
         if serializer.is_valid():
             serializer.validated_data['password'] = make_password(serializer.validated_data['password'])
             user = serializer.save()
-            
+
             return JsonResponse({
                 'message': 'Register successful!'
             }, status=status.HTTP_201_CREATED)
@@ -61,6 +64,7 @@ class UserRegisterView(generics.GenericAPIView):
                 'error_message': 'This email has already exist!',
                 'errors_code': 400,
             }, status=status.HTTP_400_BAD_REQUEST)
+
 
 class UserLoginView(generics.GenericAPIView):
     permissions = [permissions.AllowAny]
@@ -72,8 +76,8 @@ class UserLoginView(generics.GenericAPIView):
         if serializer.is_valid():
             user = self.authenticate(
                 request,
-                username = serializer.data['username'],
-                password = serializer.data['password']
+                username=serializer.data['username'],
+                password=serializer.data['password']
             )
             print(user)
             if user:
@@ -109,7 +113,7 @@ class UserLoginView(generics.GenericAPIView):
                     user.is_staff = True
                     user.is_superuser = True
                     user.save()
-                
+
                 print(user)
                 return user
         return None
@@ -124,9 +128,9 @@ class UserLoginView(generics.GenericAPIView):
 class UserListAttendedContest(generics.GenericAPIView):
     # serializer_class = UserContestAttendedSerializer
     queryset = User.objects
+
     def get(self, req, *args, **kwargs):
         obj = self.get_object()
-        print(obj)
         data = obj.attended_contest.all()
         ser = ContestAttendedSerializer(data, many=True)
         return Response(ser.data)
@@ -134,6 +138,7 @@ class UserListAttendedContest(generics.GenericAPIView):
 
 class JoinContest(generics.GenericAPIView):
     serializer_class = UserSerializer
+
     def post(self, request, *args, **kwargs):
         obj = request.user
         contest_id = request.data.get('contest_id')
