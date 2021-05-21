@@ -6,19 +6,19 @@ from rest_framework.renderers import JSONRenderer
 from api.serializers.ContestSerializer import ContestSerializer, ContestIdSerializer
 from api.serializers.LanguageSerializer import LanguageSerializer, LanguageIdSerializer
 class ProblemSerializer(DjongoModelSerializer):
-    contest = ContestIdSerializer()
-    languages = LanguageIdSerializer(many=True)
+    # contest = ContestIdSerializer()
+    # languages = LanguageIdSerializer(many=True)
     class Meta:
         model = Problem
-        fields = ('_id', 'title', 'contest', 'languages', 'description', 'score', 'code_test', 'data_sample', 'train_data', 'test_data', 'time_executed_limit')
+        fields = ('_id', 'title',  'description', 'score', 'code_test', 'data_sample', 'train_data', 'test_data', 'time_executed_limit')
 
     def create(self, validated_data):
         return Problem.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
-        instance.contest = validated_data.get('contest', instance.contest)
-        instance.languages = validated_data.get('languages', instance.languages)
+        # instance.contest = validated_data.get('contest', instance.contest)
+        # instance.languages = validated_data.get('languages', instance.languages)
         instance.description = validated_data.get('description', instance.description)
         instance.score = validated_data.get('score', instance.score)
         instance.code_test = validated_data.get('code_test', instance.code_test)
