@@ -16,9 +16,16 @@
   "author": "Abhishek Soni",
   "license": "MIT",
   "dependencies": {
-    "csvtojson": "^1.1.9",
-    "ml-knn": "^2.0.0",
-    "ml-regression": "^4.2.1",
-    "prompt": "^1.0.0"
+    "@stdlib/stdlib": "^0.0.94",
+    "@tensorflow/tfjs": "^3.6.0",
+    "convnetjs": "^0.3.0",
+    "csvtojson": "^2.0.10",
+    "javascript-state-machine": "^3.1.0",
+    "keras-js": "^1.0.3",
+    "limdu": "^0.9.4",
+    "ml-knn": "^3.0.0",
+    "ml-regression": "^5.0.0",
+    "neuro.js": "^0.1.7",
+    "prompt": "^1.1.0"
   }
 }
