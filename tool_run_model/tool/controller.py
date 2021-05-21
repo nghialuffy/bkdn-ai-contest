@@ -158,9 +158,9 @@ def excute_code(file_path, language, code_test_name_file, code_train_name_file, 
     return (None, None)
     
 def process_result():
-    db = DataBase()
-    result = db.get_result()
     try:
+        db = DataBase()
+        result = db.get_result()
         if result != None:
             result["status"] = "I"
             db.update_result(result)

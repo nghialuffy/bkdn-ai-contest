@@ -3,3 +3,4 @@ from .Language import Language
 from .Problem import Problem
 from .Result import Result
 from .User import User
+from .HtmlDocument import HtmlDocument

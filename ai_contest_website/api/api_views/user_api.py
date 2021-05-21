@@ -1,36 +1,20 @@
 from django.contrib.auth.hashers import make_password, get_hasher
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
 from django.contrib.auth.hashers import check_password
 from rest_framework import generics, permissions
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.views import APIView
+from rest_framework.utils import json
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework.pagination import PageNumberPagination
 
 from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 from api.permissions.permissions import IsSSOAdmin
-from api.models import User
-from api.serializers.UserSerializer import UserSerializer, RegisterUserSerializer, UserLoginSerializer
+from api.models import User, Contest
+from api.serializers.UserSerializer import UserSerializer, RegisterUserSerializer, UserLoginSerializer,UserLoginRespSerializer
+from api.serializers import ContestAttendedSerializer
 
-class ListModelMixin(object):
-    """
-    List a queryset.
-    """
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-        print('sdddddddd')
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-class UserList(ListModelMixin, generics.ListCreateAPIView):
+class UserList(generics.ListCreateAPIView):
     authentication_classes = [JWTTokenUserAuthentication]
     permission_classes = [IsSSOAdmin]
     queryset = User.objects.all()
@@ -59,10 +43,14 @@ class UserInfo(generics.GenericAPIView):
         obj.delete()
         return Response("Language is deleted successful")
 
+
+
 class UserRegisterView(generics.GenericAPIView):
     def post(self, request):
         serializer = RegisterUserSerializer(data=request.data)
         print(serializer)
+        print(serializer.is_valid())
+        print(serializer.errors)
         if serializer.is_valid():
             serializer.validated_data['password'] = make_password(serializer.validated_data['password'])
             user = serializer.save()
@@ -76,8 +64,11 @@ class UserRegisterView(generics.GenericAPIView):
                 'errors_code': 400,
             }, status=status.HTTP_400_BAD_REQUEST)
 
-class UserLoginView(APIView):
+class UserLoginView(generics.GenericAPIView):
     permissions = [permissions.AllowAny]
+    serializer_class = UserLoginRespSerializer
+    query_set = User.objects
+
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -91,12 +82,12 @@ class UserLoginView(APIView):
                 refresh = TokenObtainPairSerializer.get_token(user)
                 data = {
                     'refresh_token': str(refresh),
-                    'access_token': str(refresh.access_token)
+                    'access_token': str(refresh.access_token),
                 }
                 return Response(data, status=status.HTTP_200_OK)
 
             return Response({
-                'error_message': 'Email or password is incorrect!',
+                'error_message': 'Username or password is incorrect!',
                 'error_code': 400
             }, status=status.HTTP_400_BAD_REQUEST)
 
@@ -120,6 +111,8 @@ class UserLoginView(APIView):
                     user.is_staff = True
                     user.is_superuser = True
                     user.save()
+                
+                print(user)
                 return user
         return None
 
@@ -128,3 +121,27 @@ class UserLoginView(APIView):
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
+
+
+class UserListAttendedContest(generics.GenericAPIView):
+    # serializer_class = UserContestAttendedSerializer
+    queryset = User.objects
+    def get(self, req, *args, **kwargs):
+        obj = self.get_object()
+        print(obj)
+        data = obj.attended_contest.all()
+        ser = ContestAttendedSerializer(data, many=True)
+        return Response(ser.data)
+
+
+class JoinContest(generics.GenericAPIView):
+    serializer_class = UserSerializer
+    def post(self, request, *args, **kwargs):
+        obj = request.user
+        contest_id = request.data.get('contest_id')
+        print(contest_id)
+
+        obj = User.objects.filter(_id=obj.id).first()
+        contest = Contest.objects.filter(_id=contest_id).first()
+        obj.attended_contest.add(contest)
+        return Response('Ok')
