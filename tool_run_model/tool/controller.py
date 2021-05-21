@@ -5,13 +5,20 @@ from datetime import datetime
 
 def excute_code(file_path, language, code_test_name_file, code_train_name_file, input_file, output_file):
     try:
-        os.chdir(file_path)
+        src_file_path = os.path.join("/media", file_path)
+        des_file_path = os.path.join("./", file_path)
+        os.chdir(src_file_path)
         # Load result
-        data_output = open(os.path.join(file_path, output_file), 'r').readlines()
+        data_output = open(os.path.join(src_file_path, output_file), 'r').readlines()
         data_output = [x.replace("\n","").strip() for x in data_output if x != "" or x != None]
         # Load input
-        data_input = open(os.path.join(file_path, input_file), 'r').readlines()
+        data_input = open(os.path.join(src_file_path, input_file), 'r').readlines()
         data_input = [x.replace("\n","").strip() for x in data_input if x != "" or x != None]
+        # Copy to ./result
+
+        os.system("cp -f '%s' '%s'" % (src_file_path , des_file_path))
+        os.system("cp -f '%s' '%s'" % (src_file_path , des_file_path))
+        os.chdir(des_file_path)
         # excute
         if language == "python2":
             count = 0
