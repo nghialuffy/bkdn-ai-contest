@@ -24,7 +24,11 @@ class ProblemList(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         # Get contest object
-        contest = Contest.objects.filter(pk=request.data['contest']).first()
+        try:
+            contest = Contest.objects.filter(pk=request.data['contest']).first()
+        except Exception:
+            data = {'error':'Can not find contest'}
+            return Response(data=data, status=status.HTTP_404_NOT_FOUND)
         queryset =self.get_queryset()
         # Get language object
         languages = request.data['languages'].split(', ')
@@ -35,8 +39,12 @@ class ProblemList(generics.ListCreateAPIView):
             serializer.validated_data['contest'] = contest           
             serializer.save()
             problem = Problem.objects.get(pk=serializer.data['_id'])
-            for item in request.data['languages'].split(', '):
-                problem.languages.add(Language.objects.filter(pk=item).first())
+            try:
+                for item in request.data['languages'].split(', '):
+                    problem.languages.add(Language.objects.filter(pk=item).first())
+            except Exception:
+                data = {'error':'Can not find language'}
+                return Response(data=data, status=status.HTTP_404_NOT_FOUND)
             problem.save()
             # problem.update()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
@@ -77,16 +85,3 @@ class ProblemInfo(generics.GenericAPIView):
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-
-class ProblemUpload(views.APIView):
-    parser_classes = [MultiPartParser, FormParser]
-    def get(self, request):
-        Response(data={"OK":'OK'}, status=status.HTTP_200_OK)
-    def post(self, request, format=None):
-        print(request.data)
-        serializer = ProblemSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
