@@ -18,10 +18,10 @@ class LanguageList(generics.ListCreateAPIView):
     def list(self, request):
         # Note the use of `get_queryset()` instead of `self.queryset`
         # TokenUser.
-        print('***********************')
-        print(request.user.id)
-        user = User.objects.get(pk=request.user.id)
-        print(user.username)
+        # print('***********************')
+        # print(request.user.id)
+        # user = User.objects.get(pk=request.user.id)
+        # print(user.username)
         queryset = self.get_queryset()
         serializer = LanguageSerializer(queryset, many=True)
         return Response(serializer.data)
@@ -29,7 +29,7 @@ class LanguageList(generics.ListCreateAPIView):
 
 class LanguageInfo(generics.GenericAPIView):
     authentication_classes = [JWTTokenUserAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrReadOnly]
     queryset = Language.objects
     serializer_class = LanguageSerializer
 
@@ -38,7 +38,7 @@ class LanguageInfo(generics.GenericAPIView):
             obj = self.get_object()
         except Exception as exc:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        user = JWTAuthentication.get_user(request)
+        # user = JWTAuthentication.get_user(request)
         serializer = self.get_serializer(obj)
         return Response(serializer.data)
 

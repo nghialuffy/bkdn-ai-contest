@@ -7,7 +7,7 @@ from django.core import serializers
 from api.models import Problem, Contest, Language
 from api.serializers.UserSerializer import UserSerializer
 from rest_framework.permissions import IsAuthenticated
-from api.serializers.ProblemSerializer import ProblemSerializer 
+from api.serializers.ProblemSerializer import ProblemSerializer , CreateProblemSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
 class ProblemList(generics.ListCreateAPIView):
     queryset = Problem.objects.all()
@@ -28,24 +28,17 @@ class ProblemList(generics.ListCreateAPIView):
         queryset =self.get_queryset()
         # Get language object
         languages = request.data['languages'].split(', ')
-        language_objects = list()
-        for item in request.data['languages'].split(', '):
-            language_objects.append(Language.objects.filter(pk=item).first())
-        print('******************************')
-        print(language_objects)
-
+        
         temp_queryset = request.data.copy()
-        temp_queryset['languages'] = language_objects
-        print(temp_queryset)
-        serializer = ProblemSerializer(data=temp_queryset)
+        serializer = CreateProblemSerializer(data=temp_queryset)
         if serializer.is_valid():
-            print('*******************valided*************')
-            serializer.validated_data['contest'] = contest
-            serializer.validated_data['languages'] = language_objects
-            print(serializer.validated_data)
-            
+            serializer.validated_data['contest'] = contest           
             serializer.save()
-            print('------------------------------------saved')
+            problem = Problem.objects.get(pk=serializer.data['_id'])
+            for item in request.data['languages'].split(', '):
+                problem.languages.add(Language.objects.filter(pk=item).first())
+            problem.save()
+            # problem.update()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)

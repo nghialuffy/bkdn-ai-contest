@@ -102,3 +102,17 @@ class AttendedContest(generics.GenericAPIView):
         # queryset = queryset.filter(contestants=username)
         serializer = ContestSerializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class AttendedUser(generics.GenericAPIView):
+    # serializer_class = UserContestAttendedSerializer
+    queryset = Contest.objects
+
+    def get(self, req, *args, **kwargs):
+        obj = self.get_object()
+        print(obj)
+
+        data = obj.attended_contest.filter(user_id=obj)
+        print(data)
+        ser = UserSerializer(data, many=True)
+        return Response(ser.data)

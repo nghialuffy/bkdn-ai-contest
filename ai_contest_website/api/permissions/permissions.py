@@ -87,13 +87,14 @@ class IsOrganizerOrReadOnly(BasePermission):
 
 class IsAdminOrReadOnly(BasePermission):
     """
-    The request is authenticated as a Organizer or a read-only request
+    The request is authenticated as a Admin or a read-only request
     """
     def has_permission(self, request, view):
         try:
             assert request.user and request.user.id
             user = User.objects.filter(pk=request.user.id).first()
-            print(user.is_organizer)
+            # print(user.is_organizer)
+            print(request.path.split('/')[-2])
             return bool (
                 request.method in SAFE_METHODS or 
                 request.user and
