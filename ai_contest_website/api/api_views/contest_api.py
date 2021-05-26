@@ -14,16 +14,14 @@ from rest_framework import generics, permissions
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from api.serializers.ContestSerializer import ContestListSerializer
+from api.serializers.ContestSerializer import ContestListSerializer, ContestListWithProblemsSerializer
 
 
 class ContestList(generics.ListCreateAPIView):
-    
     queryset = Contest.objects.all()
     serializer_class = ContestSerializer
+
     def list(self, request):
         queryset = self.get_queryset()
         serializer = ContestListSerializer(queryset, many=True)
@@ -37,16 +35,17 @@ class ContestList(generics.ListCreateAPIView):
         # isValid() require created user is a object ID
         temp_request = request.data.copy()
         temp_request['created_user'] = user._id
-        
+
         serializer = ContestSerializer(data=temp_request)
         if serializer.is_valid():
-            
+
             # created user require a User instance not ObjectID
             serializer.validated_data['created_user'] = user
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
+
 
 class ContestInfo(generics.GenericAPIView):
     queryset = Contest.objects
@@ -88,9 +87,11 @@ class ContestInfo(generics.GenericAPIView):
             'message': 'Contest is updated failed'
         }, status=status.HTTP_400_BAD_REQUEST)
 
+
 class AttendedContest(generics.GenericAPIView):
     queryset = Contest.objects.all()
     serializer_class = ContestSerializer
+
     def get(self, request, *args, **kwargs):
         id = self.kwargs['id']
         print("id: ", id)
@@ -116,3 +117,13 @@ class AttendedUser(generics.GenericAPIView):
         print(data)
         ser = UserSerializer(data, many=True)
         return Response(ser.data)
+
+
+class ContestListWithProblems(generics.ListAPIView):
+    serializer_class = ContestListWithProblemsSerializer
+    queryset = Contest.objects.all()
+
+    # def get(self, request, *args, **kwargs):
+    #     list_contest = self.get_queryset()
+    #     ser = self.get_serializer(data=list_contest, many=True)
+    #     return Response(ser.data)

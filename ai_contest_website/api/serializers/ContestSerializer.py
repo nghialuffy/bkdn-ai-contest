@@ -1,3 +1,5 @@
+import json
+
 from rest_meets_djongo.serializers import DjongoModelSerializer, ObjectIdField
 from djongo import models
 from api.models import Contest
@@ -24,11 +26,16 @@ from rest_framework import serializers
 #         if not ObjectId.is_valid(value):  # User submitted ID's might not be properly structured
 #             raise InvalidId
 #         return smart_text(value)
+from api.models import Problem
+from api.serializers.UserSerializer import UserListContestSerializer
+
+
 class ContestSerializer(DjongoModelSerializer):
     created_user = serializers.StringRelatedField()
+
     class Meta:
         model = Contest
-        fields = ('_id', 'title', 'description','created', 'created_user', 'time_start', 'time_end')
+        fields = ('_id', 'title', 'description', 'created', 'created_user', 'time_start', 'time_end')
         # fields = '__all__'
 
     def create(self, validated_data):
@@ -52,6 +59,8 @@ class ContestSerializer(DjongoModelSerializer):
     def validate(self, data):
         validated_data = data
         return validated_data
+
+
 class ContestIdSerializer(DjongoModelSerializer):
     class Meta:
         model = Contest
@@ -66,16 +75,44 @@ class ContestIdSerializer(DjongoModelSerializer):
         # validated_data['created_user'] = JSONFIeld.to_internal_value(data['created_user'])
         return data
 
+
 class ContestAttendedSerializer(DjongoModelSerializer):
     class Meta:
         model = Contest
         fields = ('_id', 'title')
 
+
 class ContestListSerializer(DjongoModelSerializer):
     created_user = UserListContestSerializer()
+
     class Meta:
         model = Contest
         fields = ('_id', 'title', 'created', 'created_user', 'time_start', 'time_end')
+
+
+class ContestListWithProblemsSerializer(DjongoModelSerializer):
+    problems = serializers.SerializerMethodField('get_problems')
+    created_user = UserListContestSerializer()
+
+    def get_problems(self, instance):
+        query_id = instance._id
+        data = Problem.objects.filter(contest_id=query_id)
+        print(data.count())
+        if data.count() != 0:
+            print(data)
+            # new_problems = [problem.languages for problem in data]
+            # languages = [data.languages_id
+            # print(languages)
+            problems = data.values('title')
+            print(problems)
+            return problems
+        problems = []
+        return problems
+
+    class Meta:
+        model = Contest
+        fields = ('_id', 'title', 'created', 'created_user', 'time_start', 'time_end', 'problems')
+        extra_fields = ['problems']
 # contest = Contest(title='bkdnContest 1')
 # contest.save()
 # serializer_class = ContestSerializer(contest)

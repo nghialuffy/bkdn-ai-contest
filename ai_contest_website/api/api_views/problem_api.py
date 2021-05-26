@@ -32,7 +32,6 @@ class ProblemList(generics.ListCreateAPIView):
         queryset =self.get_queryset()
         # Get language object
         languages = request.data['languages'].split(', ')
-        
         temp_queryset = request.data.copy()
         serializer = CreateProblemSerializer(data=temp_queryset)
         if serializer.is_valid():

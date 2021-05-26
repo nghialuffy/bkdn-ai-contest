@@ -21,8 +21,6 @@ class Problem(models.Model):
     class Meta:
         db_table = 'problem'
 
-    def __str__(self):
-        return self.title 
 
 # c = Contest.objects.get(title='BKDN AI')
 # l1 = Language.objects.get(name='Python') 
