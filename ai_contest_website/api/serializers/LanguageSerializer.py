@@ -39,6 +39,12 @@ class LanguageIdSerializer(DjongoModelSerializer):
 
     def validate(self, data):
         return data
+
+
+class LanguageNameSerializer(DjongoModelSerializer):
+    class Meta:
+        model = Language
+        fields = ['_id', 'name']
     # def create(self, validated_data):
     #     language = Language.objects.create(**validated_data)
     #     return language

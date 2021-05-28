@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from api.models import Result, Problem, Contest, User, Language
-from api.serializers.ResultSerializer import ResultSerializer, ResultSunmitSerializer
+from api.serializers.ResultSerializer import ResultSerializer, ResultSubmitSerializer
 
 class ResultList(generics.ListCreateAPIView):
     queryset = Result.objects.all()
@@ -21,23 +21,29 @@ class ResultList(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         # get User
         user = User.objects.filter(pk=request.user.id).first()
+        problem = Problem.objects.filter(_id=request.data['problem_id']).first()
         print(request.user.id)
-        problem = Problem.objects.filter(pk=request.data['problem']).first()
+        print(request.data)
+        print(user)
         print(problem)
-        language = Language.objects.filter(pk=request.data['language']).first()
         temp_queryset = request.data.copy()
-        temp_queryset['created_user']  = user._id
-        serializer = ResultSunmitSerializer(data=temp_queryset)
+        temp_queryset['created_user'] = user
+        temp_queryset['problem_id'] = request.data['problem_id']
+        print(temp_queryset)
+        serializer = ResultSubmitSerializer(data=temp_queryset)
         if serializer.is_valid():
-            print('valided')
+            language = Language.objects.filter(_id=request.data['language_id']).first()
+            if language is None:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            serializer.validated_data['language'] = language
             serializer.validated_data['created_user'] = user
             serializer.validated_data['problem'] = problem
-            serializer.validated_data['language'] = language
-            print(serializer.validated_data)
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class ResultInfo(generics.GenericAPIView):
     queryset = Result.objects
     serializer_class = ResultSerializer

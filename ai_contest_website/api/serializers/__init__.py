@@ -1,6 +1,6 @@
 from .LanguageSerializer import LanguageSerializer
 from .ProblemSerializer import ProblemSerializer
-from .ResultSerializer import ResultSerializer, ResultSunmitSerializer
+from .ResultSerializer import ResultSerializer, ResultSubmitSerializer
 from .UserSerializer import UserSerializer, RegisterUserSerializer, UserContestAttendedSerializer
 from .ContestSerializer import ContestSerializer, ContestAttendedSerializer
 from .HtmlDocumentSerializer import HtmlDocumentSerializer

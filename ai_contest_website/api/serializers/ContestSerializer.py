@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
 from api.serializers.UserSerializer import UserIdSerializer
 from api.serializers.UserSerializer import UserListContestSerializer
-from api.serializers.LanguageSerializer import LanguageSerializer
+from api.serializers.LanguageSerializer import LanguageNameSerializer
 from rest_framework import serializers
 
 # from bson import ObjectId
@@ -90,6 +90,14 @@ class ContestListSerializer(DjongoModelSerializer):
         fields = ('_id', 'title', 'created', 'created_user', 'time_start', 'time_end')
 
 
+class ProblemContestListSerializer(DjongoModelSerializer):
+    languages = LanguageNameSerializer(many=True)
+
+    class Meta:
+        model = Problem
+        fields = ('title', 'languages')
+
+
 class ContestListWithProblemsSerializer(DjongoModelSerializer):
     problems = serializers.SerializerMethodField('get_problems')
     created_user = UserListContestSerializer()
@@ -99,12 +107,7 @@ class ContestListWithProblemsSerializer(DjongoModelSerializer):
         data = Problem.objects.filter(contest_id=query_id)
         print(data.count())
         if data.count() != 0:
-            print(data)
-            # new_problems = [problem.languages for problem in data]
-            # languages = [data.languages_id
-            # print(languages)
             problems = data.values('title')
-            print(problems)
             return problems
         problems = []
         return problems

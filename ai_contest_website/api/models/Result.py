@@ -1,4 +1,3 @@
-
 from djongo import models
 from api.models import User
 from api.models import Contest, Language, Problem
@@ -7,10 +6,12 @@ from os.path import join
 from django.core.files.storage import FileSystemStorage
 
 fs = FileSystemStorage(location=join(MEDIA_URL, 'result'))
+
+
 class Result(models.Model):
     _id = models.ObjectIdField()
     problem = models.ForeignKey("problem", on_delete=models.CASCADE)
-    created_user = models.ForeignKey("user", on_delete=models.CASCADE,related_name='result_created_user')
+    created_user = models.ForeignKey("user", on_delete=models.CASCADE, related_name='result_created_user')
     model_file = models.FileField(storage=fs)
     code_test = models.FileField(storage=fs)
     code_train = models.FileField(storage=fs)
@@ -23,10 +24,10 @@ class Result(models.Model):
 
     def save(self, *args, **kwargs):
         super(Result, self).save(**kwargs)
-    
+
     def __str__(self):
         return self._id
-    
+
 # print("Create result")
 
 # u = User.objects.get(username='bkdn')

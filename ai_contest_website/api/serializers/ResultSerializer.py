@@ -36,14 +36,16 @@ class ResultSerializer(DjongoModelSerializer):
     def validate(self, data):
         validated_data = data
         return validated_data
-class ResultSunmitSerializer(DjongoModelSerializer):
-    problem = serializers.StringRelatedField()
+
+
+class ResultSubmitSerializer(DjongoModelSerializer):
+    problem = serializers.SlugRelatedField(slug_field='title', read_only=True)
     created_user = serializers.StringRelatedField()
-    language = serializers.StringRelatedField()
+    # language = LanguageSerializer()
 
     class Meta:
         model = Result
-        fields = ('_id', 'problem', 'created_user', 'model_file', 'code_test', 'code_train', 'language', 'time_submit')
+        fields = ('_id', 'problem', 'created_user', 'model_file', 'code_test', 'code_train', 'time_submit')
 
     def create(self, validated_data):
         return Result.objects.create(**validated_data)
@@ -60,6 +62,7 @@ class ResultSunmitSerializer(DjongoModelSerializer):
         return instance
 
     def validate(self, data):
+        print(data)
         validated_data = data
         return validated_data
 # print("Create result")
