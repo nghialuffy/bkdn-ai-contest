@@ -25,8 +25,6 @@ class Result(models.Model):
     def save(self, *args, **kwargs):
         super(Result, self).save(**kwargs)
 
-    def __str__(self):
-        return self._id
 
 # print("Create result")
 

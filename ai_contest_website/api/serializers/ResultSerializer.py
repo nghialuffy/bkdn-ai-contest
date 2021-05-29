@@ -9,14 +9,16 @@ from api.serializers.ProblemSerializer import ProblemSerializer, ProblemIdSerial
 from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
 
+
 class ResultSerializer(DjongoModelSerializer):
-    problem = _serializers.ObjectIdField()
+    problem = serializers.SlugRelatedField('title', read_only=True)
     created_user = serializers.StringRelatedField()
     language = serializers.StringRelatedField()
 
     class Meta:
         model = Result
-        fields = ('_id', 'problem', 'created_user', 'model_file', 'code_test', 'code_train', 'accuracy', 'time_submit', 'language')
+        fields = ('_id', 'problem', 'created_user', 'model_file', 'code_test', 'code_train', 'accuracy', 'time_submit',
+                  'language')
 
     def create(self, validated_data):
         return Result.objects.create(**validated_data)
@@ -41,6 +43,7 @@ class ResultSerializer(DjongoModelSerializer):
 class ResultSubmitSerializer(DjongoModelSerializer):
     problem = serializers.SlugRelatedField(slug_field='title', read_only=True)
     created_user = serializers.StringRelatedField()
+
     # language = LanguageSerializer()
 
     class Meta:

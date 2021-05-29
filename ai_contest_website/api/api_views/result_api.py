@@ -1,22 +1,32 @@
-from bson import json_util
+import operator
+
 from rest_framework import permissions, viewsets, status, views, generics
-from django.shortcuts import render
-from django.http import JsonResponse
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from api.models import Result, Problem, Contest, User, Language
 from api.serializers.ResultSerializer import ResultSerializer, ResultSubmitSerializer
+from functools import reduce
+from django.db.models import Q
+
 
 class ResultList(generics.ListCreateAPIView):
-    queryset = Result.objects.all()
     serializer_class = ResultSerializer
-    # print(queryset)
-    def list(self, request):
-        # Note the use of `get_queryset()` instead of `self.queryset`
-        queryset = self.get_queryset()
-        serializer = ResultSerializer(queryset, many=True)
-        return Response(serializer.data)
 
+    def get_queryset(self, **kwargs):
+        queryset = Result.objects.all()
+
+        if len(self.request.query_params) == 0:
+            return queryset
+
+        my_filter = self.request.query_params
+        reduce_func = reduce(
+            operator.and_,
+            (Q(**d) for d in [dict([i]) for i in my_filter.items()])
+        )
+        queryset = queryset.filter(reduce_func)
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        return super().list(self, request, args, kwargs)
 
     def create(self, request, *args, **kwargs):
         # get User
@@ -52,7 +62,7 @@ class ResultInfo(generics.GenericAPIView):
         try:
             obj = self.get_object()
         except Exception as exc:
-            return Response(status = status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = self.get_serializer(obj)
         return Response(serializer.data)
 
@@ -60,7 +70,7 @@ class ResultInfo(generics.GenericAPIView):
         try:
             obj = self.get_object()
         except Exception as exc:
-            return Response(status = status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_404_NOT_FOUND)
         data = {}
         if operator:
             data["message"] = "Delete result successful"
