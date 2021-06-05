@@ -1,0 +1,21 @@
+version : '3.3'
+
+services :
+    crawl_worker:
+        image: tool_image
+        build:
+            context: .
+        networks:
+            - tool_network
+        restart: unless-stopped
+        volumes:
+            - /home/tool
+            - /media/result:/media/result/:ro
+            # - ./source:/home/source/
+            # - type: tmpfs
+            #   target: /dev/shm
+            #   tmpfs:
+            #     size: 2000000000
+networks:
+    crawl_network:
+        driver: overlay

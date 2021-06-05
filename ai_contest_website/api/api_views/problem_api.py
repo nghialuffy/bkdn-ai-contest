@@ -10,7 +10,7 @@ from api.serializers.UserSerializer import UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import JSONRenderer
 from api.serializers.ProblemSerializer import ProblemSerializer 
-
+from rest_framework.parsers import MultiPartParser, FormParser
 def index(request):
     list_problem = Problem.objects.all()
 
@@ -27,7 +27,7 @@ class ProblemList(generics.ListCreateAPIView):
 class ProblemInfo(generics.GenericAPIView):
     queryset = Problem.objects
     serializer_class = ProblemSerializer
-
+    
     def get(self, request, *args, **kwargs):
         try:
             obj = self.get_object()
@@ -54,6 +54,19 @@ class ProblemInfo(generics.GenericAPIView):
         lookup_field = 'pk'
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status = status.HTTP_201_CREATE)
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+
+class ProblemUpload(views.APIView):
+    parser_classes = [MultiPartParser, FormParser]
+    def get(self, request):
+        Response(data={"OK":'OK'}, status=status.HTTP_200_OK)
+    def post(self, request, format=None):
+        print(request.data)
+        serializer = ProblemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
