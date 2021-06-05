@@ -54,7 +54,7 @@ class ProblemList(generics.ListCreateAPIView):
             return Response(data=serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
-class ProblemInfo(generics.GenericAPIView):
+class ProblemInfo(generics.RetrieveUpdateDestroyAPIView):
     queryset = Problem.objects
     serializer_class = ProblemSerializer
 
@@ -85,6 +85,16 @@ class ProblemInfo(generics.GenericAPIView):
         lookup_field = 'pk'
         if serializer.is_valid():
             serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, *args, **kwargs):
+        obj = Problem(code_test=request.FILES)
+        serializer = self.get_serializer(obj, data=request.data, partial=True)
+        lookup_field = 'pk'
+        if serializer.is_valid():
+            serializer.update()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

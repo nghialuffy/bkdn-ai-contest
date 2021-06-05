@@ -87,7 +87,7 @@ class ContestListSerializer(DjongoModelSerializer):
 
     class Meta:
         model = Contest
-        fields = ('_id', 'title', 'created', 'created_user', 'time_start', 'time_end')
+        fields = ('_id', 'title', 'created', 'created_user', 'time_start', 'time_end', 'description')
 
 
 class ProblemContestListSerializer(DjongoModelSerializer):

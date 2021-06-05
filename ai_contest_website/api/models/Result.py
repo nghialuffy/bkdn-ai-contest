@@ -18,7 +18,8 @@ class Result(models.Model):
     accuracy = models.FloatField()
     time_submit = models.DateTimeField(auto_now_add=True)
     language = models.ForeignKey('language', on_delete=models.CASCADE)
-
+    status = models.TextField(default='N')
+    time_excute = models.FloatField()
     class Meta:
         db_table = 'result'
 

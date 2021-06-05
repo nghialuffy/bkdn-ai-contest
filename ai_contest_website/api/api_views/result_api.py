@@ -72,18 +72,10 @@ class ResultInfo(generics.GenericAPIView):
         except Exception as exc:
             return Response(status=status.HTTP_404_NOT_FOUND)
         data = {}
+        operator = obj.delete()
         if operator:
             data["message"] = "Delete result successful"
         else:
             data["message"] = "Delete result failed"
         return Response(data=data)
 
-    # def post(self, request, *args, **kwargs):
-    #     obj = Result()
-    #     serializer = self.get_serializer(obj, data=request.data, partial=True)
-    #     lookup_field = 'pk'
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status = status.HTTP_201_CREATE)
-    #     else:
-    #         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
