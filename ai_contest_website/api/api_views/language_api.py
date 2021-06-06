@@ -8,6 +8,7 @@ from api.permissions.permissions import IsSSOAdmin, IsOrganizerOrReadOnly, IsAdm
 from api.serializers.LanguageSerializer import LanguageSerializer
 from bson import ObjectId
 
+
 class LanguageList(generics.ListCreateAPIView):
     authentication_classes = [JWTTokenUserAuthentication]
     permission_classes = [IsAdminOrReadOnly]
@@ -27,7 +28,7 @@ class LanguageList(generics.ListCreateAPIView):
         return Response(serializer.data)
 
 
-class LanguageInfo(generics.GenericAPIView):
+class LanguageInfo(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [JWTTokenUserAuthentication]
     permission_classes = [IsAdminOrReadOnly]
     queryset = Language.objects
@@ -55,17 +56,5 @@ class LanguageInfo(generics.GenericAPIView):
             data["failure"] = "Delete language failed"
         return Response(data=data)
 
-    def put(self, request, *args, **kwargs):
-        try:
-            obj = self.get_object()
-        except Exception as exc:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = self.get_serializer(obj, data=request.data, partial=True)
-        lookup_field = 'pk'
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "Update language successful"})
-        else:
-            return Response({"message": "failed", "details": serializer.errors})
-    
+
 

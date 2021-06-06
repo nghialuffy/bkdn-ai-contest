@@ -9,7 +9,8 @@ class User(models.Model):
     password = models.TextField()
     attended_contests = models.ArrayReferenceField(
         to='contest',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        default=[]
     )
     role = models.TextField()
     # role = models.ManyToManyField(Role)

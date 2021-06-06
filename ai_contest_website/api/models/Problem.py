@@ -5,7 +5,7 @@ from api.models import Language, Contest
 class Problem(models.Model):
     _id = models.ObjectIdField()
     title = models.CharField(max_length=50)
-    description_text = models.TextField()
+    description_text = models.TextField(null=True)
     contest = models.ForeignKey('contest', on_delete=models.CASCADE, related_name="contest_id")
     languages = models.ArrayReferenceField(
         to=Language, 

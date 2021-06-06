@@ -6,7 +6,7 @@ from rest_framework.renderers import JSONRenderer
 class LanguageSerializer(DjongoModelSerializer):
     class Meta:
         model = Language
-        fields = ('_id', 'name', 'created', 'path')
+        fields = ('_id', 'name', 'created', 'path', 'file_extensions')
     
     def create(self, validated_data):
         language = Language.objects.create(**validated_data)
@@ -17,9 +17,10 @@ class LanguageSerializer(DjongoModelSerializer):
         instance.name = validated_data.get('name', instance.name)
         instance.path = validated_data.get('path', instance.path)
         instance.created = validated_data.get('created', instance.created)
+        instance.file_extensions = validated_data.get('file_extensions', instance.file_extensions)
         instance.save()
         return instance
-    
+
     # def save(self, **kwargs):
     #     super(Language, self).save(**kwargs)
 

@@ -10,7 +10,8 @@ class Contest(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     attended_contestants = models.ArrayReferenceField(
         to='user',
-        on_delete=models.DO_NOTHING
+        on_delete=models.DO_NOTHING,
+        null=True
     )
     time_start = models.DateTimeField()
     time_end = models.DateTimeField()
