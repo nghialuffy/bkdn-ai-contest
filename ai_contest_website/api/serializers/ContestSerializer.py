@@ -39,10 +39,7 @@ class ContestSerializer(DjongoModelSerializer):
         # fields = '__all__'
 
     def create(self, validated_data):
-        contest = Contest.objects.create(**validated_data)
-        # print('***************************')
-        # print(validated_data['created_user'])
-        return contest
+        return Contest.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
@@ -80,6 +77,14 @@ class ContestAttendedSerializer(DjongoModelSerializer):
     class Meta:
         model = Contest
         fields = ('_id', 'title')
+
+
+class ContestListContestantsSerializer(DjongoModelSerializer):
+    attended_contestants = UserIdSerializer(many=True)
+
+    class Meta:
+        model = Contest
+        fields = ('_id', 'title', 'attended_contestants')
 
 
 class ContestListSerializer(DjongoModelSerializer):

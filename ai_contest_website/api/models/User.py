@@ -7,7 +7,10 @@ class User(models.Model):
     first_name = models.TextField(max_length=50, default="")
     last_name = models.TextField(max_length=50, default="")
     password = models.TextField()
-    attended_contest = models.ManyToManyField(to='contest', blank=True)
+    attended_contests = models.ArrayReferenceField(
+        to='contest',
+        on_delete=models.CASCADE
+    )
     role = models.TextField()
     # role = models.ManyToManyField(Role)
     created = models.DateTimeField(auto_now_add=True)
@@ -15,6 +18,7 @@ class User(models.Model):
     is_organizer = models.BooleanField(default=False)
     url = models.URLField()
     objects = models.DjongoManager()
+
     def __str__(self):
         return self.username
 

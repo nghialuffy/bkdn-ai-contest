@@ -16,6 +16,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from api.serializers.ContestSerializer import ContestListSerializer, ContestListWithProblemsSerializer
+from api.serializers.ContestSerializer import ContestListContestantsSerializer
 
 
 class ContestList(generics.ListCreateAPIView):
@@ -94,28 +95,19 @@ class AttendedContest(generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         id = self.kwargs['id']
-        print("id: ", id)
         queryset = self.get_queryset()
-        # queryset = queryset.filter(title='BKDN AI')
-        # testList = ["BKDN AI","bkdnContest 1"]
         queryset = queryset.filter(contestants=id)
-        # queryset = queryset.filter(username__in = contestList)
-        # queryset = queryset.filter(contestants=username)
-        serializer = ContestSerializer(queryset, many=True)
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
 
 class AttendedUser(generics.GenericAPIView):
-    # serializer_class = UserContestAttendedSerializer
-    queryset = Contest.objects
 
     def get(self, req, *args, **kwargs):
-        obj = self.get_object()
-        print(obj)
-
-        data = obj.attended_contest.filter(user_id=obj)
-        print(data)
-        ser = UserSerializer(data, many=True)
+        contest_id = self.kwargs['contest_id']
+        contest = Contest.objects.get(_id=contest_id)
+        print(contest._id)
+        ser = ContestListContestantsSerializer(contest)
         return Response(ser.data)
 
 

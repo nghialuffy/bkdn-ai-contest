@@ -87,7 +87,9 @@ class UserLoginSerializer(serializers.Serializer):
 
 
 class UserContestAttendedSerializer(DjongoModelSerializer):
-    # attended_contest = ContestAttendedSerializer()
+    attended_contests = serializers.StringRelatedField(many=True, required=False)
+
     class Meta:
         model = User
-        fields = ['username', 'attended_contest', 'first_name', 'last_name', 'created']
+        fields = ['_id', 'attended_contests']
+
