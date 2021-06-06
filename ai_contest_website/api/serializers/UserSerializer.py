@@ -93,3 +93,16 @@ class UserContestAttendedSerializer(DjongoModelSerializer):
         model = User
         fields = ['_id', 'attended_contests']
 
+
+class UserAdminPASerializer(DjongoModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['_id', 'username', 'is_admin']
+
+
+class UserOrganizerPASerializer(DjongoModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['_id', 'username', 'is_organizer']
