@@ -9,7 +9,7 @@ from api.models import Contest, User
 from api.serializers.UserSerializer import UserSerializer
 from rest_framework.renderers import JSONRenderer
 from api.serializers.ContestSerializer import ContestSerializer
-
+from datetime import datetime
 from rest_framework import generics, permissions
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -46,8 +46,12 @@ class ContestList(generics.ListCreateAPIView):
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
-
-
+class UpcomingContest(generics.GenericAPIView):
+    queryset = Contest.objects.filter(time_start__gte=datetime.now().isoformat())
+    def get(self, request, *args, **kwargs):
+        queryset= self.get_queryset()
+        serializer = ContestListSerializer(queryset, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 class ContestInfo(generics.GenericAPIView):
     queryset = Contest.objects
     serializer_class = ContestSerializer
