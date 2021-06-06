@@ -16,7 +16,8 @@ urlpatterns = [
     path('token/', include('api.routes.TokenRoutes'), name='token'),
     path('auth/', include('api.routes.AuthRoutes'), name='auth'),
     path('document/', include('api.routes.DocumentRoutes'), name='document'),
-    path('report/', include('api.routes.ReportRoutes'), name='report')
+    path('report/', include('api.routes.ReportRoutes'), name='report'),
+    # path('ranking/', include('api.routes.RankingRoutes'), name='ranking')
 
     
     # ex: /polls/5/results/
