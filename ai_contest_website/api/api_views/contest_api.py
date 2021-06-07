@@ -31,7 +31,7 @@ class ContestList(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         # Get created user by auth token in header
         user = User.objects.filter(pk=request.user.id).first()
-        # Copy QuerySet to temp data 'QuerySet is immun..'. 
+        # Copy QuerySet to temp data 'QuerySet is immun..'.
         # We can modified field in QuerySet to pass isValid() by using objectID
         # isValid() require created user is a object ID
         temp_request = request.data.copy()
@@ -46,12 +46,23 @@ class ContestList(generics.ListCreateAPIView):
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
 class UpcomingContest(generics.GenericAPIView):
-    queryset = Contest.objects.filter(time_start__gte=datetime.now().isoformat())
+    now = datetime.now()
+    nextmonth = datetime(now.year, now.month + 1, now.day)
+    queryset = Contest.objects.filter(
+        time_start__gte=now,
+        time_start__lte=nextmonth)
+    # time_start__year=datetime.today().year,
+    # time_start__month=datetime.today().month)
+
     def get(self, request, *args, **kwargs):
-        queryset= self.get_queryset()
+        queryset = self.get_queryset()
         serializer = ContestListSerializer(queryset, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
 class ContestInfo(generics.GenericAPIView):
     queryset = Contest.objects
     serializer_class = ContestSerializer
