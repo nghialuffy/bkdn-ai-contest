@@ -51,6 +51,8 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
        'rest_framework_simplejwt.authentication.JWTTokenUserAuthentication',
@@ -58,6 +60,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
 }
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 CORS_ALLOWED_ORIGINS = [
@@ -65,6 +69,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000"
 ]
+
 ALLOWED_HOSTS = [
     '127.0.0.1',
     '192.168.2.115',
@@ -101,7 +106,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
-ROOT_URLCONF = 'ai_contest_website.urls'
+ROOT_URLCONF = 'server.urls'
 
 TEMPLATES = [
     {
@@ -119,7 +124,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ai_contest_website.wsgi.application'
+WSGI_APPLICATION = 'server.wsgi.application'
 
 
 # Database

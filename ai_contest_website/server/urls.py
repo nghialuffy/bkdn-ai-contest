@@ -17,7 +17,7 @@ Including another URLconf
 from django.urls import include, path
 from django.urls import path
 from django.conf.urls.static import static
-from ai_contest_website import settings
+from server import settings
 urlpatterns = [
     path('api/', include('api.urls'))
 ]
