@@ -28,6 +28,7 @@ class ContestList(generics.ListCreateAPIView):
         serializer = ContestListSerializer(queryset, many=True)
         return Response(serializer.data)
 
+    # TODO: Prepare to remove this method 
     def create(self, request, *args, **kwargs):
         # Get created user by auth token in header
         user = User.objects.filter(pk=request.user.id).first()
