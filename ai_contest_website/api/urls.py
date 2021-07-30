@@ -4,6 +4,8 @@ from api.api_views import UserLoginView, UserRegisterView
 
 urlpatterns = [
     path('organizer/', include('api.organizer.urls'), name='organizer'),
+    path('nuser/', include('api.user.urls'), name='nuser'),
+    
 
     path('language/', include('api.routes.LanguageRoutes'), name='language'),
     path('user/', include('api.routes.UserRoutes'), name='user'),
