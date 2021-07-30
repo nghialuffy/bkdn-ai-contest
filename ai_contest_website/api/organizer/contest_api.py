@@ -47,9 +47,9 @@ class OrganizerContestInfo(APIView):
         :return:
         """
         contest_id = kwargs.get('contest_id')
-        contest = Contest.objects.get(_id=contest_id)
-        serializer = OrganizerContestSerializer(contest)
-        return Response(serializer.data)
+        contest = Contest.objects.get(_id=contest_id, created_user=request.user.id)
+        serializer = OrganizerContestInfoSerializer(contest)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
     # Update a contest
@@ -90,10 +90,10 @@ class OrganizerContestInfo(APIView):
         except Exception as e:
             return Response({'message': 'Contest not found'}, status=status.HTTP_404_NOT_FOUND)
 
-
 class OrganizerListContestants(generics.ListAPIView):
     serializer_class = OrganizerContestantsInContestSerializer
 
+    # Get the contestants of the contest
     def get(self, request, *args, **kwargs):
         """
         :param request:
@@ -101,7 +101,7 @@ class OrganizerListContestants(generics.ListAPIView):
         """
         contest_id = kwargs.get('contest_id')
         
-        contest = Contest.objects.get(_id=contest_id)
+        contest = Contest.objects.get(_id=contest_id, created_user=request.user.id)
         queryset = contest.attended_contestants.all()
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -111,5 +111,3 @@ class OrganizerListContestants(generics.ListAPIView):
         serializer = self.get_serializer()(contest.attended_contestants, many=True)
         return Response(serializer.data)
 
-
-    # Add a user to a contest
