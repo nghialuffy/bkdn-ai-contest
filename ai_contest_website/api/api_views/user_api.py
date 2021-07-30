@@ -124,7 +124,7 @@ class UserLoginView(generics.GenericAPIView):
         except User.DoesNotExist:
             return None
 
-
+# TODO: Delete this because migrated it to user folder 
 class UserListAttendedContest(generics.GenericAPIView):
     # serializer_class = UserContestAttendedSerializer
     queryset = User.objects
@@ -136,6 +136,7 @@ class UserListAttendedContest(generics.GenericAPIView):
         return Response(ser.data)
 
 
+# TODO: Delete this because migrated it to user folder
 class JoinContest(generics.GenericAPIView):
     serializer_class = UserContestAttendedSerializer
 

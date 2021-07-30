@@ -21,6 +21,7 @@ class UserContestRegister(APIView):
         if contest.attended_contestants.filter(_id=user._id).exists():
             return Response({'message': 'Already registered'}, status=status.HTTP_400_BAD_REQUEST)
         contest.attended_contestants.add(user)
+        user.attended_contests.add(contest)
         return Response({'message': 'Register successfully'}, status=status.HTTP_201_CREATED)
         
 
@@ -37,5 +38,6 @@ class UserContestUnregister(APIView):
         user = User.objects.get(_id=request.user.id)
         if contest.attended_contestants.filter(_id=user._id).exists():
             contest.attended_contestants.remove(user)
+            user.attended_contests.remove(contest)
             return Response({'message': 'Unregister successfully'}, status=status.HTTP_201_CREATED)
         return Response({'message': 'You is not a contestant'}, status=status.HTTP_201_CREATED)
