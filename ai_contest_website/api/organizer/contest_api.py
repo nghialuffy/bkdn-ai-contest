@@ -1,6 +1,6 @@
 from api.models import Contest, User
-from api.serializers.ContestSerializer import ContestSerializer
-from .serializers import OrganizerContestSerializer
+from .serializers.contest_serializers import OrganizerContestSerializer, OrganizerContestInfoSerializer
+from .serializers.user_serializers import OrganizerContestantsInContestSerializer
 from rest_framework import status
 from rest_framework import generics, permissions
 from rest_framework.response import Response
@@ -9,12 +9,15 @@ from rest_framework.views import APIView
 
 class OrganizerContestList(generics.ListCreateAPIView):
     queryset = Contest.objects.all()
-    serializer_class = ContestSerializer
+    serializer_class = OrganizerContestSerializer
 
     def list(self, request):
         queryset = self.get_queryset().filter(created_user=request.user.id).defer('created_user')
-        print(queryset[0].created_user)
-        serializer = OrganizerContestSerializer(queryset, many=True)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer()(queryset, many=True)
         return Response(serializer.data)
 
     # Create a new contest
@@ -27,9 +30,8 @@ class OrganizerContestList(generics.ListCreateAPIView):
         temp_request = request.data.copy()
         temp_request['created_user'] = user._id
 
-        serializer = OrganizerContestSerializer(data=temp_request)
+        serializer = self.get_serializer()(data=temp_request)
         if serializer.is_valid():
-
             # created user require a User instance not ObjectID
             serializer.validated_data['created_user'] = user
             serializer.save()
@@ -87,3 +89,27 @@ class OrganizerContestInfo(APIView):
             return Response({'message': 'Delete successfully'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'message': 'Contest not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class OrganizerListContestants(generics.ListAPIView):
+    serializer_class = OrganizerContestantsInContestSerializer
+
+    def get(self, request, *args, **kwargs):
+        """
+        :param request:
+        :return:
+        """
+        contest_id = kwargs.get('contest_id')
+        
+        contest = Contest.objects.get(_id=contest_id)
+        queryset = contest.attended_contestants.all()
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer()(contest.attended_contestants, many=True)
+        return Response(serializer.data)
+
+
+    # Add a user to a contest
