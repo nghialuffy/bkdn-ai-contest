@@ -12,8 +12,9 @@ class UserContestRankSerializer(DjongoModelSerializer):
         fields = ('_id', 'user', 'total_score')
 
     
-class UserListAttendedContestsSerializer(DjongoModelSerializer):
+class UserListRegisterContestsSerializer(DjongoModelSerializer):
     contest = UserContestInfoSerializer()
+        
     class Meta:
         model = Contestant
         fields = ('_id', 'contest', 'total_score')
