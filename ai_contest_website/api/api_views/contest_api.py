@@ -106,14 +106,6 @@ class ContestInfo(generics.GenericAPIView):
 
 
 
-class AttendedUser(generics.GenericAPIView):
-
-    def get(self, req, *args, **kwargs):
-        contest_id = self.kwargs['contest_id']
-        contest = Contest.objects.get(_id=contest_id)
-        ser = ContestListContestantsSerializer(contest)
-        return Response(ser.data)
-
 
 class ContestListWithProblems(generics.ListAPIView):
     serializer_class = ContestListWithProblemsSerializer
