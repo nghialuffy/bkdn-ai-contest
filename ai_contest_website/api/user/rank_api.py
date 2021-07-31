@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status, generics
 from api.models import Contest
 from api.models.Contest import Contestant
-from .serializers.rank_serializers import UserContestRankSerializer
+from .serializers.contestant_serializers import UserContestRankSerializer
 
 class UserContestRank(generics.GenericAPIView):
     """Represent final ranking of a contest"""

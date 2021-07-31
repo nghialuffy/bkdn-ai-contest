@@ -1,6 +1,6 @@
 from api.models import Contest, User
 from api.serializers.ContestSerializer import ContestSerializer
-from .serializers import UserContestRegisterSerializer
+from .serializers.contest_serializers import UserContestRegisterSerializer
 from rest_framework import status
 from rest_framework import generics, permissions
 from rest_framework.response import Response

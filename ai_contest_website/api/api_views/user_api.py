@@ -51,7 +51,6 @@ class UserInfo(generics.GenericAPIView):
 class UserRegisterView(generics.GenericAPIView):
     def post(self, request):
         serializer = RegisterUserSerializer(data=request.data)
-        print(serializer)
         if serializer.is_valid():
             serializer.validated_data['password'] = make_password(serializer.validated_data['password'])
             user = serializer.save()
