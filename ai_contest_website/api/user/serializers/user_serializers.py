@@ -6,4 +6,8 @@ class UserContestantsInContestSerializer(DjongoModelSerializer):
     class Meta:
         model = User
         fields = ('_id', 'username', 'first_name', 'last_name')
-    
+
+class UserInfoSerializer(DjongoModelSerializer):
+    class Meta:
+        model = User
+        fields = ('_id', 'username', 'first_name', 'last_name')
