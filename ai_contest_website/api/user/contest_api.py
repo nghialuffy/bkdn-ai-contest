@@ -6,8 +6,34 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from api.models.Contest import Contestant
+from api.utils import time_utils
 
+class UserContestList(generics.GenericAPIView):
+    """
+    Get all the contest of a user
+    """
+    def get_contest(self, list_contest, contest_status: str):
+        new_contests = []
+        for contest in list_contest:
+            time_start = contest.time_start
+            time_end = contest.time_end
+            if time_utils.get_status_contest(time_start, time_end) == contest_status:
+                new_contests.append(contest)
+        return new_contests
 
+    def get(self, request, format=None):
+        contest_status = request.GET.get('status', None)
+        data = Contest.objects.all()
+        if contest_status is not None:
+            data = self.get_contest(data, contest_status)
+        page = self.paginate_queryset(data)
+        if page is not None:
+            serializer = ContestSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = ContestSerializer(data, many=True)
+        return Response(serializer.data)
+        
+            
 class UserContestRegister(APIView):
     """
     Register a user to a contest.
