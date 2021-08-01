@@ -46,7 +46,7 @@ class UserContestRankWebsocket(AsyncConsumer):
     async def send_contest_rank(self, contest_id):
         await self.send({
             "type": "websocket.send",
-            "text": json.dumps(self.get_contest_rank_json(contest_id))
+            "text": json.dumps(self.get_contest_rank_json(contest_id), ensure_ascii=False)
         })        
 
     def get_contest_rank_json(self, contest_id):
@@ -58,7 +58,7 @@ class UserContestRankWebsocket(AsyncConsumer):
         pc = pagination_class()
         p = pc.paginate_queryset(list_contestants, request, None)
         serializer = UserContestRankSerializer(p, many=True)
-        ss = pc.get_paginated_response(serializer.data)
-        return ss.data
+        response = pc.get_paginated_response(serializer.data)
+        return response.data
 
      
