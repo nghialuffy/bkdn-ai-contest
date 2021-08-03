@@ -48,12 +48,12 @@ class UserContestRegister(APIView):
         print(contest.__dict__)
         
         if Contestant.objects.filter(contest_id=contest_id, user=user).exists():
-            return Response({'message': 'Already registered'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'status': 'fail', 'message': 'Already registered'}, status=status.HTTP_200_OK)
         contestant = Contestant(contest=contest, user=user, total_score=0)
         contestant.save()
         contest.attended_contestants.add(contestant)
         user.attended_contests.add(contestant)
-        return Response({'message': 'Register successfully'}, status=status.HTTP_201_CREATED)
+        return Response({'status': 'success', 'message': 'Register successfully'}, status=status.HTTP_201_CREATED)
         
 
 class UserContestUnregister(APIView):
