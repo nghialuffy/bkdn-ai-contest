@@ -1,10 +1,11 @@
 from api.models import Contest, User
 from .serializers.contest_serializers import OrganizerContestSerializer, OrganizerContestInfoSerializer
-from .serializers.user_serializers import OrganizerContestantsInContestSerializer
+from .serializers.contestant_serializers import OrganizerContestantsInContestSerializer
 from rest_framework import status
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from api.models.Contest import Contestant
 
 
 class OrganizerContestList(generics.ListCreateAPIView):
@@ -99,15 +100,14 @@ class OrganizerListContestants(generics.ListAPIView):
         :param request:
         :return:
         """
-        contest_id = kwargs.get('contest_id')
-        
-        contest = Contest.objects.get(_id=contest_id, created_user=request.user.id)
-        queryset = contest.attended_contestants.all()
+        contest_id = kwargs.get('contest_id')        
+        contestants = Contestant.objects.filter(contest_id=contest_id)
+        queryset = contestants
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer()(contest.attended_contestants, many=True)
+        serializer = self.get_serializer()(queryset, many=True)
         return Response(serializer.data)
 
