@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from api.models.Contest import Contestant
 from api.utils import time_utils
+from api.user.serializers.contest_serializers import UserContestWithProblemsSerializer
 
 class UserContestList(generics.GenericAPIView):
     """
@@ -28,11 +29,16 @@ class UserContestList(generics.GenericAPIView):
             data = self.get_contest(data, contest_status)
         page = self.paginate_queryset(data)
         if page is not None:
-            serializer = ContestSerializer(page, many=True)
+            show_problems = request.GET.get('show_problems', False) == ''
+            if show_problems:
+                serializer = UserContestWithProblemsSerializer(page, many=True)
+            else:
+                serializer = ContestSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
         serializer = ContestSerializer(data, many=True)
         return Response(serializer.data)
         
+
             
 class UserContestRegister(APIView):
     """
