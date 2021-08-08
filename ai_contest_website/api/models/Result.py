@@ -1,7 +1,7 @@
 from djongo import models
 from api.models import User
 from api.models import Contest, Language, Problem
-from ai_contest_website.settings import MEDIA_URL
+from server.settings import MEDIA_URL
 from os.path import join
 from django.core.files.storage import FileSystemStorage
 from datetime import datetime

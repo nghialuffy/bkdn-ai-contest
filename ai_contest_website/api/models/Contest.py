@@ -2,6 +2,19 @@ from djongo import models
 from api.models import User
 
 
+class Contestant(models.Model):
+
+    class Meta:
+        db_table = 'contestant'
+
+    _id = models.ObjectIdField(primary_key=True)
+    user = models.ForeignKey('user', on_delete=models.CASCADE, null=False, related_name='contestant_user')
+    contest = models.ForeignKey('contest', on_delete=models.CASCADE, null=False, related_name='contestant_contest_id')
+    total_score = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self._id)
+
 class Contest(models.Model):
     _id = models.ObjectIdField()
     title = models.CharField(max_length=50)
@@ -9,9 +22,9 @@ class Contest(models.Model):
     created_user = models.ForeignKey('user', on_delete=models.CASCADE, null=False, related_name='created_user')
     created = models.DateTimeField(auto_now_add=True)
     attended_contestants = models.ArrayReferenceField(
-        to='user',
-        on_delete=models.DO_NOTHING,
-        null=True
+        to='contestant',
+        default=[],
+        related_name='attended_contestants'
     )
     time_start = models.DateTimeField()
     time_end = models.DateTimeField()

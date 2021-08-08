@@ -8,9 +8,10 @@ class User(models.Model):
     last_name = models.TextField(max_length=50, default="")
     password = models.TextField()
     attended_contests = models.ArrayReferenceField(
-        to='contest',
+        to='contestant',
         on_delete=models.CASCADE,
-        default=[]
+        default=[],
+        related_name='attended_contests'
     )
     role = models.TextField()
     # role = models.ManyToManyField(Role)

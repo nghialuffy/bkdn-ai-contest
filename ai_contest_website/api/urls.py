@@ -3,9 +3,10 @@ from django.urls import path, include
 from api.api_views import UserLoginView, UserRegisterView
 
 urlpatterns = [
-    # ex: /polls/
-    # path('', views.index, name='index'),
-    # ex: /polls/5/
+    path('organizer/', include('api.organizer.urls'), name='organizer'),
+    path('nuser/', include('api.user.urls'), name='nuser'),
+    
+
     path('language/', include('api.routes.LanguageRoutes'), name='language'),
     path('user/', include('api.routes.UserRoutes'), name='user'),
     path('contest/', include('api.routes.ContestRoutes'), name='contest'),

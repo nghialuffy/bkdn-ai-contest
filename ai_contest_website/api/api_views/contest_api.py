@@ -28,6 +28,7 @@ class ContestList(generics.ListCreateAPIView):
         serializer = ContestListSerializer(queryset, many=True)
         return Response(serializer.data)
 
+    # TODO: Prepare to remove this method 
     def create(self, request, *args, **kwargs):
         # Get created user by auth token in header
         user = User.objects.filter(pk=request.user.id).first()
@@ -104,26 +105,6 @@ class ContestInfo(generics.GenericAPIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
-class AttendedContest(generics.GenericAPIView):
-    queryset = Contest.objects.all()
-    serializer_class = ContestSerializer
-
-    def get(self, request, *args, **kwargs):
-        id = self.kwargs['id']
-        queryset = self.get_queryset()
-        queryset = queryset.filter(contestants=id)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-
-class AttendedUser(generics.GenericAPIView):
-
-    def get(self, req, *args, **kwargs):
-        contest_id = self.kwargs['contest_id']
-        contest = Contest.objects.get(_id=contest_id)
-        print(contest._id)
-        ser = ContestListContestantsSerializer(contest)
-        return Response(ser.data)
 
 
 class ContestListWithProblems(generics.ListAPIView):

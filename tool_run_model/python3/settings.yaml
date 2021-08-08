@@ -1,0 +1,5 @@
+MONGO_URI : mongodb+srv://nghia:RSopELht6beTlZ2x@ai-contest.igk5z.mongodb.net/test
+MONGO_DB : ai_contest
+
+MEDIA_PATH: "/media"
+LANGUAGE_NAME: 'python3'
