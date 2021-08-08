@@ -10,6 +10,5 @@ urlpatterns = [
     # ex: /polls/
     path('', ContestList.as_view(), name='index'),
     path('problems/', ContestListWithProblems.as_view(), name='list_problems'),
-    path('upcoming/', UpcomingContest.as_view(), name='upcoming_contest'),
     path('<str:pk>/', ContestInfo.as_view(), name='contest_detail'),
 ]

@@ -10,6 +10,8 @@ class Contestant(models.Model):
     _id = models.ObjectIdField(primary_key=True)
     user = models.ForeignKey('user', on_delete=models.CASCADE, null=False, related_name='contestant_user')
     contest = models.ForeignKey('contest', on_delete=models.CASCADE, null=False, related_name='contestant_contest_id')
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     total_score = models.IntegerField(default=0)
 
     def __str__(self):
