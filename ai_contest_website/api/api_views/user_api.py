@@ -98,23 +98,14 @@ class UserLoginView(generics.GenericAPIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def authenticate(self, request, username=None, password=None):
-        user = User.objects.get(username=username)
-        if user != None:
-            hash_password = user.password
-            pwd_valid = check_password(password, hash_password)
-            if pwd_valid:
-                try:
-                    user = User.objects.get(username=username)
-                except User.DoesNotExist:
-                    # Create a new user. There's no need to set a password
-                    # because only the password from settings.py is checked.
-                    user = User(username=username)
-                    user.is_staff = True
-                    user.is_superuser = True
-                    user.save()
-
-                print(user)
-                return user
+        try:
+            user = User.objects.get(username=username)
+        except Exception as exc:
+            return None
+        hash_password = user.password
+        pwd_valid = check_password(password, hash_password)
+        if pwd_valid:
+            return user
         return None
 
     def get_user(self, user_id):
