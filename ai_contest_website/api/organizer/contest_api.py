@@ -59,7 +59,9 @@ class OrganizerContestInfo(APIView):
             # Update contest with the given id
             contest_id = kwargs.get('contest_id')
             contest = Contest.objects.get(_id=contest_id)
-            if contest.created_user != request.user:
+            print(contest.created_user._id)
+            print(request.user.id)
+            if str(contest.created_user._id) != str(request.user.id):
                 return Response({'message': 'You are not the creator of this contest'}, status=status.HTTP_406_NOT_ACCEPTABLE)
             
             # clone the contest and append the updated data
