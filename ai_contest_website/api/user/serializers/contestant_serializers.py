@@ -9,7 +9,7 @@ class UserContestRankSerializer(DjongoModelSerializer):
     user = UserInfoSerializer(read_only=True)
     class Meta:
         model = Contestant
-        fields = ('_id', 'user', 'total_score')
+        fields = ('_id', 'user', 'total_score', 'created', 'updated')
 
     
 class UserListRegisterContestsSerializer(DjongoModelSerializer):
@@ -17,7 +17,7 @@ class UserListRegisterContestsSerializer(DjongoModelSerializer):
         
     class Meta:
         model = Contestant
-        fields = ('_id', 'contest', 'total_score')
+        fields = ('_id', 'contest', 'total_score','created', 'updated')
 
     def to_internal_value(self, data):
         return data

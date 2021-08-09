@@ -37,7 +37,7 @@ class UserContestList(generics.GenericAPIView):
             return self.get_paginated_response(serializer.data)
         serializer = ContestSerializer(data, many=True)
         return Response(serializer.data)
-        
+
 
             
 class UserContestRegister(APIView):
@@ -60,7 +60,8 @@ class UserContestRegister(APIView):
         contest.attended_contestants.add(contestant)
         user.attended_contests.add(contestant)
         return Response({'status': 'success', 'message': 'Register successfully'}, status=status.HTTP_201_CREATED)
-        
+
+
 
 class UserContestUnregister(APIView):
     """

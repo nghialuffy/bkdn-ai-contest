@@ -3,11 +3,11 @@ from django.urls import path, include
 from api.api_views import UserLoginView, UserRegisterView
 
 urlpatterns = [
-    path('organizer/', include('api.organizer.urls'), name='organizer'),
+    path('admin/', include('api.admins.urls'), name='admin'),
     path('nuser/', include('api.user.urls'), name='nuser'),
+    path('organizer/', include('api.organizer.urls'), name='organizer'),
     
 
-    path('language/', include('api.routes.LanguageRoutes'), name='language'),
     path('user/', include('api.routes.UserRoutes'), name='user'),
     path('contest/', include('api.routes.ContestRoutes'), name='contest'),
     path('problem/', include('api.routes.ProblemRoutes'), name='problem'),
@@ -18,11 +18,4 @@ urlpatterns = [
     path('auth/', include('api.routes.AuthRoutes'), name='auth'),
     path('document/', include('api.routes.DocumentRoutes'), name='document'),
     path('report/', include('api.routes.ReportRoutes'), name='report'),
-    # path('ranking/', include('api.routes.RankingRoutes'), name='ranking')
-
-    
-    # ex: /polls/5/results/
-    # path('<int:question_id>/results/', views.results, name='results'),
-    # # ex: /polls/5/vote/
-    # path('<int:question_id>/vote/', views.vote, name='vote'),
 ]
