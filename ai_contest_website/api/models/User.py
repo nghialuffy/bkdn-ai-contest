@@ -9,7 +9,7 @@ class User(models.Model):
     password = models.TextField()
     attended_contests = models.ArrayReferenceField(
         to='contestant',
-        on_delete=models.CASCADE,
+        on_delete=models.DO_NOTHING,
         default=[],
         related_name='attended_contests'
     )
