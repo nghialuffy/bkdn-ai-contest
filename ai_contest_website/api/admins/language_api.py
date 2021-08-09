@@ -23,7 +23,7 @@ class AdminLanguageList(generics.ListCreateAPIView):
 
 class AdminLanguageInfo(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [JWTTokenUserAuthentication]
-    permission_classes = [IsAdminOrReadOnly]
+    # permission_classes = [IsAdminOrReadOnly]
     queryset = Language.objects
     serializer_class = AdminLanguageSerializer
 
@@ -35,7 +35,7 @@ class AdminLanguageInfo(generics.RetrieveUpdateDestroyAPIView):
         # user = JWTAuthentication.get_user(request)
         serializer = self.get_serializer(obj)
         return Response(serializer.data)
-        
+    
 
     def delete(self, request, *args, **kwargs):
         try:
