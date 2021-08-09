@@ -2,7 +2,7 @@
 export TERM=xterm
 Xvfb :20 -screen 0 1366x768x16 &
 export DISPLAY=:20
-cd /home
+cd /app
 echo "RUN TOOL"
 while true;
 do
