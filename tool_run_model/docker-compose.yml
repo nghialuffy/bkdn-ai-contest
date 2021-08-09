@@ -1,0 +1,127 @@
+version : '3.3'
+
+services:
+    tool_python3:
+        image: tool_python3
+        build:
+            context: python3
+            dockerfile: dockerfile
+        deploy:
+            mode: replicated
+            replicas: 0
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: 2048M
+                reservations:
+                    cpus: "1"
+                    memory: 2048M
+            restart_policy:
+                condition: any
+                delay: 20s
+                max_attempts: 3
+                window: 60s
+        restart: unless-stopped
+        volumes:
+            - /home/tool
+            - /media:/media
+
+    tool_python2:
+        image: tool_python2
+        build:
+            context: python2
+            dockerfile: dockerfile
+        deploy:
+            mode: replicated
+            replicas: 0
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: 2048M
+                reservations:
+                    cpus: "1"
+                    memory: 2048M
+            restart_policy:
+                condition: any
+                delay: 20s
+                max_attempts: 3
+                window: 60s
+        restart: unless-stopped
+        volumes:
+            - /home/tool
+            - /media:/media
+
+    tool_javascript:
+        image: tool_javascript
+        build:
+            context: javascript
+            dockerfile: dockerfile
+        deploy:
+            mode: replicated
+            replicas: 0
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: 2048M
+                reservations:
+                    cpus: "1"
+                    memory: 2048M
+            restart_policy:
+                condition: any
+                delay: 20s
+                max_attempts: 3
+                window: 60s
+        restart: unless-stopped
+        volumes:
+            - /home/tool
+            - /media:/media
+
+    tool_java:
+        image: tool_java
+        build:
+            context: java
+            dockerfile: dockerfile
+        deploy:
+            mode: replicated
+            replicas: 0
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: 2048M
+                reservations:
+                    cpus: "1"
+                    memory: 2048M
+            restart_policy:
+                condition: any
+                delay: 20s
+                max_attempts: 3
+                window: 60s
+        restart: unless-stopped
+        volumes:
+            - /home/tool
+            - /media:/media
+
+    tool_c_plus_plus:
+        image: tool_c_plus_plus
+        build:
+            context: c_plus_plus
+            dockerfile: dockerfile
+        deploy:
+            mode: replicated
+            replicas: 0
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: 2048M
+                reservations:
+                    cpus: "1"
+                    memory: 2048M
+            restart_policy:
+                condition: any
+                delay: 20s
+                max_attempts: 3
+                window: 60s
+        restart: unless-stopped
+        volumes:
+            - /home/tool
+            - /media:/media
