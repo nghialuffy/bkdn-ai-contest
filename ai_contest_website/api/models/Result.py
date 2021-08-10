@@ -19,7 +19,7 @@ class Result(models.Model):
     model_file = models.FileField(upload_to=get_result_directory_path)
     code_test = models.FileField(upload_to=get_result_directory_path)
     code_train = models.FileField(upload_to=get_result_directory_path)
-    accuracy = models.FloatField()
+    accuracy = models.FloatField(default=0.0, null=False)
     language = models.ForeignKey('language', on_delete=models.CASCADE)
     status = models.TextField(default='N')
     time_execute = models.FloatField(default=0)
