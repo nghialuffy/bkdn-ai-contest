@@ -19,13 +19,7 @@ class OrganizerProblemList(generics.ListCreateAPIView):
         contest_id = kwargs.get('contest_id', '')
         print(contest_id)
         queryset = Problem.objects.filter(contest_id=contest_id)
-        print(queryset)
-        # paginate_queryset
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = ProblemSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        serializer = ProblemSerializer(page, many=True)
+        serializer = ProblemSerializer(queryset, many=True)
         return Response(serializer.data)
 
     # Create a problem

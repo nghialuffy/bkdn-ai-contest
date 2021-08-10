@@ -14,10 +14,6 @@ class OrganizerContestList(generics.ListCreateAPIView):
 
     def list(self, request):
         queryset = self.get_queryset().filter(created_user=request.user.id).defer('created_user')
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -91,23 +87,13 @@ class OrganizerContestInfo(APIView):
         except Exception as e:
             return Response({'message': 'Contest not found'}, status=status.HTTP_404_NOT_FOUND)
 
-class OrganizerListContestants(generics.ListAPIView):
-    serializer_class = OrganizerContestantsInContestSerializer
 
+class OrganizerListContestants(generics.ListAPIView):
     # Get the contestants of the contest
     def get(self, request, *args, **kwargs):
-        """
-        :param request:
-        :return:
-        """
         contest_id = kwargs.get('contest_id')        
         contestants = Contestant.objects.filter(contest_id=contest_id)
         queryset = contestants
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer()(queryset, many=True)
+        serializer = OrganizerContestantsInContestSerializer(queryset, many=True)
         return Response(serializer.data)
 
