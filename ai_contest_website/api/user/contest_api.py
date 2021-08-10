@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from api.models.Contest import Contestant
 from api.utils import time_utils
-from api.user.serializers.contest_serializers import UserContestWithProblemsSerializer
+from .serializers.contest_serializers import UserContestWithProblemsSerializer, UserContestInfoSerializer
 
 class UserContestList(generics.GenericAPIView):
     """
@@ -38,7 +38,14 @@ class UserContestList(generics.GenericAPIView):
         serializer = ContestSerializer(data, many=True)
         return Response(serializer.data)
 
-
+class UserContestInfo(generics.GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        contest_id = kwargs.get('contest_id', None)
+        if contest_id is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        contest = Contest.objects.get(_id=contest_id)
+        serializer = UserContestInfoSerializer(contest)
+        return Response(serializer.data)
             
 class UserContestRegister(APIView):
     """
