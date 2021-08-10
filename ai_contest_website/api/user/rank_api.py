@@ -16,10 +16,7 @@ class UserContestRank(generics.GenericAPIView):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             # Descending total score of list
             rank_list = Contestant.objects.filter(contest_id=contest_id).order_by('-total_score')
-            page = self.paginate_queryset(rank_list)
-            if page is not None:
-                serializer = UserContestRankSerializer(page, many=True)
-                return self.get_paginated_response(serializer.data)
+            serializer = UserContestRankSerializer(rank_list, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(e, status=status.HTTP_400_BAD_REQUEST)
