@@ -13,7 +13,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 class OrganizerProblemList(generics.ListCreateAPIView):
     serializer_class = ProblemSerializer
-
+    queryset = Problem.objects.all()
     def list(self, request, *args, **kwargs):
         # Note the use of `get_queryset()` instead of `self.queryset`
         contest_id = kwargs.get('contest_id', '')
@@ -55,7 +55,7 @@ class OrganizerProblemList(generics.ListCreateAPIView):
             # problem.update()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(data=serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class OrganizerProblemInfo(generics.RetrieveUpdateDestroyAPIView):

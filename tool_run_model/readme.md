@@ -28,16 +28,24 @@ sudo docker swarm init --advertise-addr 127.0.0.1
 ## deploy portainer to control
 
 ```bash
-sudo docker stack deploy --compose-file docker-compose.yml portainer 
+sudo docker stack deploy --compose-file docker-portainer.yml portainer 
 ```
-
 link portainer: http://127.0.0.1:9000
+
+## make directory my_media in /
+
+```bash
+cd / && sudo mkdir my_media && sudo chown -R $USER /my_media
+```
+directory /my_media is MEDIA_ROOT in api
 
 ## deploy tool
 
 ```bash
 sudo docker stack deploy --compose-file docker-compose.yml tool
 ```
+
+## scale services in http://127.0.0.1:9000/#!/1/docker/services
 
 ## ref:
 https://code.viblo.asia/helps
