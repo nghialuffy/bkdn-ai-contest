@@ -23,7 +23,7 @@ RUN pip3 install --upgrade pip
 # ==========
 # EXTRA PACKAGE
 # ==========
-
+RUN apt-get install -y nodejs npm
 
 RUN mkdir -p /app
 ENV APP_PATH /app
@@ -35,8 +35,11 @@ WORKDIR $APP_PATH
 COPY ./requirements.txt $APP_PATH/requirements.txt
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-COPY . $APP_PATH
+RUN mkdir -p /$APP_PATH/js_env
+COPY js_env/package.json $APP_PATH/js_env/package.json
+RUN cd js_env && npm install
 
+COPY . $APP_PATH
 # ==========
 # RUN SCRIPT
 # ==========

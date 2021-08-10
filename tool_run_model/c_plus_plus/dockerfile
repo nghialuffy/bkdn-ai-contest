@@ -23,7 +23,7 @@ RUN pip3 install --upgrade pip
 # ==========
 # EXTRA PACKAGE
 # ==========
-
+RUN apt install -y gcc g++
 
 RUN mkdir -p /app
 ENV APP_PATH /app
@@ -36,7 +36,6 @@ COPY ./requirements.txt $APP_PATH/requirements.txt
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . $APP_PATH
-
 # ==========
 # RUN SCRIPT
 # ==========

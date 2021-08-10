@@ -2,7 +2,7 @@ from data_access import *
 from variable import *
 import shutil, os, subprocess
 from datetime import datetime
-import regex
+import ntpath
 
 def excute_code(result_path, code_test, code_train, train_data_path, test_data_path):
     try:
@@ -18,15 +18,20 @@ def excute_code(result_path, code_test, code_train, train_data_path, test_data_p
         train_data = open(os.path.join(full_file_path, train_data_path), 'r').readlines()
         train_data = [x.replace("\n","").strip() for x in train_data if x != "" or x != None]
         
+        # copy data from problem to result
+        os.system("cp -f '%s' '%s'" % (train_data_path , full_file_path))
+        os.system("cp -f '%s' '%s'" % (test_data_path , full_file_path))
+
         # excute test code and caculater accuracy
         count = 0
         list_test = []
         for inp, out in tuple(zip(train_data, test_data)):
             test_info = {}
             ttime = datetime.now().timestamp()
-            output_test = subprocess.run(["python3", code_test], capture_output=True, text=True, input=inp)
+            code_test_file = ntpath.split(code_test)[1]
+            output_test = subprocess.run(["python3", code_test_file], capture_output=True, text=True, input=inp)
             ttime = datetime.now().timestamp() - ttime
-            test_info["time_excute"] = str(ttime)
+            test_info["time_execute"] = str(ttime)
             print(str(output_test.stdout).replace("\n","").strip())
             if str(out) == str(output_test.stdout).replace("\n","").strip():
                 test_info["status"] = True
@@ -45,6 +50,7 @@ def excute_code(result_path, code_test, code_train, train_data_path, test_data_p
     
 def process_result():
     db = DataBase()
+    db.connect()
     language_id = db.get_language()
     result = db.get_result(language_id)
     try:
@@ -58,10 +64,9 @@ def process_result():
             test_data_path = problem["test_data"]           # output.csv
 
             start_time = datetime.now().timestamp()
-            match = regex.search(r"^(?P<result_path>[a-zA-Z0-9\/]+)\/", result["code_test"])
-            result_path = match.group("result_path")
+            result_path = ntpath.split(result["code_test"])[0]
             result["accuracy"], result["result_info"] = excute_code(result_path, result["code_test"], result["code_train"], train_data_path, test_data_path)
-            result["time_excute"] = round(datetime.now().timestamp() - start_time, 5)
+            result["time_execute"] = round(datetime.now().timestamp() - start_time, 5)
             result["status"] = "S"
             db.update_result(result)
     except Exception as exc:

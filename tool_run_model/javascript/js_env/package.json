@@ -1,0 +1,31 @@
+{
+    "name": "getting-started-with-ml-using-js",
+    "version": "1.0.0",
+    "description": "Machine Learning with JavaScript. Fast and Simple.",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+      "machine learning",
+      "ML",
+      "ML in JS",
+      "artificial intelligence",
+      "AI"
+    ],
+    "author": "Abhishek Soni",
+    "license": "MIT",
+    "dependencies": {
+      "@stdlib/stdlib": "^0.0.94",
+      "@tensorflow/tfjs": "^3.6.0",
+      "convnetjs": "^0.3.0",
+      "csvtojson": "^2.0.10",
+      "javascript-state-machine": "^3.1.0",
+      "keras-js": "^1.0.3",
+      "limdu": "^0.9.4",
+      "ml-knn": "^3.0.0",
+      "ml-regression": "^5.0.0",
+      "neuro.js": "^0.1.7",
+      "prompt": "^1.1.0"
+    }
+  }

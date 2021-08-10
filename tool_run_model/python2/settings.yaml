@@ -1,4 +1,5 @@
 MONGO_URI : mongodb+srv://nghia:RSopELht6beTlZ2x@ai-contest.igk5z.mongodb.net/test
 MONGO_DB : ai_contest
-JAVASCRIPT_VENV : "/media/nghialuffy/CODE/Chuyen Nganh IT/Nam_4_5/Thuc_Hanh_Lap_Trinh_Mang_Nang_Cao/tool_run_model/javascript"
-PYTHON3_VENV : "/media/nghialuffy/VMWAVE/BKDN_AI_CONTEST/tool_run_model/python3_venv/bin/python3"
+
+MEDIA_PATH: "/media"
+LANGUAGE_NAME: 'python2'

@@ -23,7 +23,17 @@ RUN pip3 install --upgrade pip
 # ==========
 # EXTRA PACKAGE
 # ==========
-
+RUN mkdir -p /usr/share/man/man1/
+RUN apt-get update && \
+    apt-get install -y openjdk-11-jre-headless && \
+    apt-get install -y ant && \
+    apt-get clean;
+RUN apt-get update && \
+    apt-get install ca-certificates-java && \
+    apt-get clean && \
+    update-ca-certificates -f;
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64/
+RUN export JAVA_HOME
 
 RUN mkdir -p /app
 ENV APP_PATH /app
@@ -36,7 +46,6 @@ COPY ./requirements.txt $APP_PATH/requirements.txt
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . $APP_PATH
-
 # ==========
 # RUN SCRIPT
 # ==========

@@ -11,11 +11,11 @@ services:
             replicas: 0
             resources:
                 limits:
-                    cpus: "1"
-                    memory: 2048M
+                    cpus: "0.5"
+                    memory: 512M
                 reservations:
-                    cpus: "1"
-                    memory: 2048M
+                    cpus: "0.5"
+                    memory: 512M
             restart_policy:
                 condition: any
                 delay: 20s
@@ -23,8 +23,7 @@ services:
                 window: 60s
         restart: unless-stopped
         volumes:
-            - /home/tool
-            - /media:/media
+            - /my_media:/media
 
     tool_python2:
         image: tool_python2
@@ -36,11 +35,11 @@ services:
             replicas: 0
             resources:
                 limits:
-                    cpus: "1"
-                    memory: 2048M
+                    cpus: "0.5"
+                    memory: 512M
                 reservations:
-                    cpus: "1"
-                    memory: 2048M
+                    cpus: "0.5"
+                    memory: 512M
             restart_policy:
                 condition: any
                 delay: 20s
@@ -48,8 +47,7 @@ services:
                 window: 60s
         restart: unless-stopped
         volumes:
-            - /home/tool
-            - /media:/media
+            - /my_media:/media
 
     tool_javascript:
         image: tool_javascript
@@ -61,11 +59,11 @@ services:
             replicas: 0
             resources:
                 limits:
-                    cpus: "1"
-                    memory: 2048M
+                    cpus: "0.5"
+                    memory: 512M
                 reservations:
-                    cpus: "1"
-                    memory: 2048M
+                    cpus: "0.5"
+                    memory: 512M
             restart_policy:
                 condition: any
                 delay: 20s
@@ -73,8 +71,7 @@ services:
                 window: 60s
         restart: unless-stopped
         volumes:
-            - /home/tool
-            - /media:/media
+            - /my_media:/media
 
     tool_java:
         image: tool_java
@@ -86,11 +83,11 @@ services:
             replicas: 0
             resources:
                 limits:
-                    cpus: "1"
-                    memory: 2048M
+                    cpus: "0.5"
+                    memory: 512M
                 reservations:
-                    cpus: "1"
-                    memory: 2048M
+                    cpus: "0.5"
+                    memory: 512M
             restart_policy:
                 condition: any
                 delay: 20s
@@ -98,8 +95,7 @@ services:
                 window: 60s
         restart: unless-stopped
         volumes:
-            - /home/tool
-            - /media:/media
+            - /my_media:/media
 
     tool_c_plus_plus:
         image: tool_c_plus_plus
@@ -111,11 +107,11 @@ services:
             replicas: 0
             resources:
                 limits:
-                    cpus: "1"
-                    memory: 2048M
+                    cpus: "0.5"
+                    memory: 512M
                 reservations:
-                    cpus: "1"
-                    memory: 2048M
+                    cpus: "0.5"
+                    memory: 512M
             restart_policy:
                 condition: any
                 delay: 20s
@@ -123,5 +119,4 @@ services:
                 window: 60s
         restart: unless-stopped
         volumes:
-            - /home/tool
-            - /media:/media
+            - /my_media:/media

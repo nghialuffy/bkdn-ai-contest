@@ -31,7 +31,7 @@ class OrganizerContestList(generics.ListCreateAPIView):
         temp_request = request.data.copy()
         temp_request['created_user'] = user._id
 
-        serializer = self.get_serializer()(data=temp_request)
+        serializer = self.get_serializer(data=temp_request)
         if serializer.is_valid():
             # created user require a User instance not ObjectID
             serializer.validated_data['created_user'] = user
@@ -59,7 +59,7 @@ class OrganizerContestInfo(APIView):
             # Update contest with the given id
             contest_id = kwargs.get('contest_id')
             contest = Contest.objects.get(_id=contest_id)
-            if contest.created_user != request.user:
+            if str(contest.created_user._id) != str(request.user.id):
                 return Response({'message': 'You are not the creator of this contest'}, status=status.HTTP_406_NOT_ACCEPTABLE)
             
             # clone the contest and append the updated data

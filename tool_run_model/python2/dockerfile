@@ -23,8 +23,10 @@ RUN pip3 install --upgrade pip
 # ==========
 # EXTRA PACKAGE
 # ==========
-
-
+RUN apt-get -qq install -y python python-dev python-setuptools
+RUN wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
+RUN python2 get-pip.py
+RUN python2 -m pip install --upgrade pip
 RUN mkdir -p /app
 ENV APP_PATH /app
 WORKDIR $APP_PATH
@@ -35,8 +37,10 @@ WORKDIR $APP_PATH
 COPY ./requirements.txt $APP_PATH/requirements.txt
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-COPY . $APP_PATH
+COPY ./requirements_2.txt $APP_PATH/requirements_2.txt
+RUN pip install --no-cache-dir -r requirements_2.txt
 
+COPY . $APP_PATH
 # ==========
 # RUN SCRIPT
 # ==========
