@@ -68,8 +68,9 @@ class OrganizerProblemInfo(generics.RetrieveUpdateDestroyAPIView):
 
 
     def delete(self, request, *args, **kwargs):
+        problem_id = kwargs.get('problem_id')
         try:
-            obj = self.get_object()
+            obj = Problem.objects.get(pk=problem_id)
         except Exception as exc:
             return Response(status=status.HTTP_404_NOT_FOUND)
         operator = obj.delete()
