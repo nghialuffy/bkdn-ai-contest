@@ -24,7 +24,7 @@ class UserContestList(generics.GenericAPIView):
 
     def get(self, request, format=None):
         contest_status = request.GET.get('status', None)
-        data = Contest.objects.all()
+        data = Contest.objects.all().order_by('-_id')
         if contest_status is not None:
             data = self.get_contest(data, contest_status)
         page = self.paginate_queryset(data)

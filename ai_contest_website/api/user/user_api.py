@@ -21,7 +21,7 @@ class UserListRegisterContests(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         id = self.kwargs.get('user_id')
         # TODO: change this to user'attended_contests
-        attended_contests = list(Contestant.objects.filter(user_id=id))
+        attended_contests = list(Contestant.objects.filter(user_id=id).order_by('-_id'))
         print(request.GET.get('status'))
         if request.GET.get('status') is not None:
             data = self.get_contest(attended_contests, request.GET.get('status'))
