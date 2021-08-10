@@ -45,8 +45,8 @@ class OrganizerContestInfo(APIView):
         """
         contest_id = kwargs.get('contest_id')
         contest = Contest.objects.get(_id=contest_id, created_user=request.user.id)
-        serializer = OrganizerContestInfoSerializer(contest)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        serializer = OrganizerContestSerializer(contest)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
     # Update a contest
