@@ -8,6 +8,7 @@ from channels.consumer import SyncConsumer, AsyncConsumer
 from channels.generic.http import AsyncHttpConsumer
 
 from api.models.Contest import Contestant
+from api.models import Problem, Result
 from api.user.rank_api import UserContestRank
 from .serializers.contestant_serializers import UserContestRankSerializer
 import json
@@ -50,6 +51,20 @@ class UserContestRankWebsocket(AsyncConsumer):
         })        
 
     def get_contest_rank_json(self, contest_id):
+
+        list_problems = Problem.objects.filter(contest=contest_id)
+        list_contestants = Contestant.objects.filter(contest_id=contest_id).order_by('-total_score')
+        # score from problem
+        # accuracy from result
+        for contestant in list_contestants:
+            total_score = 0
+            for problem in list_problems:
+                max_result = Result.objects.filter(problem = problem, created_user = contestant.user).order_by('-accuracy').first()
+                if max_result and max_result.accuracy:
+                    total_score += problem.score*max_result.accuracy*100
+            contestant.total_score = total_score
+            contestant.save()
+        
         list_contestants = Contestant.objects.filter(contest_id=contest_id).order_by('-total_score')
         pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
         http_request = HttpRequest()
@@ -61,4 +76,18 @@ class UserContestRankWebsocket(AsyncConsumer):
         response = pc.get_paginated_response(serializer.data)
         return response.data
 
-     
+# contest_id = '610350929b3c82229413a7f0'
+# list_problems = Problem.objects.filter(contest=contest_id)
+# list_contestants = Contestant.objects.filter(contest_id=contest_id).order_by('-total_score')
+# print(list_contestants.count())
+# print(list_problems.count())
+# # score from problem
+# # accuracy from result
+# for contestant in list_contestants:
+#     total_score = 0
+#     for problem in list_problems:
+#         max_result = Result.objects.filter(problem = problem, created_user = contestant.user).order_by('-accuracy').first()
+#         if max_result and max_result.accuracy:
+#             total_score += problem.score*max_result.accuracy
+#     contestant.total_score = total_score
+#     contestant.save()
