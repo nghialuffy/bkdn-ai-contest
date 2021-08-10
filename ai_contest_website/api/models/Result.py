@@ -22,7 +22,7 @@ class Result(models.Model):
     accuracy = models.FloatField()
     language = models.ForeignKey('language', on_delete=models.CASCADE)
     status = models.TextField(default='N')
-    time_excute = models.FloatField(default=0)
+    time_execute = models.FloatField(default=0)
 
     class Meta:
         db_table = 'result'

@@ -5,6 +5,7 @@ from .problem_api import UserProblemsOnContestId
 from .rank_api import UserContestRank
 from .user_api import UserListRegisterContests
 from .rank_ws import UserContestRankWebsocket
+from .result_ws import UserResultWebsocket
 
 
 urlpatterns = [
@@ -20,4 +21,5 @@ urlpatterns = [
 
 ws_urlpatterns = [
     path('ws/contest/<str:contest_id>/rank', UserContestRankWebsocket.as_asgi(), name='contest_rank'),
+    path('ws/result/<str:result_id>', UserResultWebsocket.as_asgi(), name='result'),
 ]
